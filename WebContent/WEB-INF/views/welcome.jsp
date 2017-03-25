@@ -12,7 +12,8 @@
   								    <h1> ${greeting} </h1> 
   							    </div>
   							    Aby przejsc do strony z pogoda kiknij ten przycisk:
-  							    <button onclick="location.href='http://localhost:8080/spring-webmvc/products';">;)</button>
+  							    
+  		 <button onclick="location.href='http://localhost:8080/spring-webmvc/products';">;)</button>
       							 </div>  
            						</section>
      </body> 
