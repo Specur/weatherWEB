@@ -4,7 +4,7 @@ public class Temperature {
 	private int[] temperature = new int[5];
 	private int[] websidePutData = new int[5];
 	
-	Temperature(){
+	public Temperature(){
 		for(int i = 0 ; i < 5 ; i ++){
 			temperature[i] = 0;
 			websidePutData[i] = 0;

@@ -10,7 +10,7 @@ import com.packt.webstore.domain. PageResults;
 //WEATHERONLINE INDEX 0
 //POGODYNKA INDEX 1
 public class Division {
-	private  static  PageResults pageResults;
+	private PageResults pageResults;
 	
 	public Division( PageResults pageResults){
 		this.pageResults = pageResults;
