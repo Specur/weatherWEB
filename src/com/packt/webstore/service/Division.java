@@ -1,8 +1,9 @@
 package com.packt.webstore.service;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.StringTokenizer;
 
 
@@ -16,7 +17,7 @@ public class Division {
 		this.pageResults = pageResults;
 	}
 	
-	//algorytm pomoniczy do Pogodynka
+	//algorytm pomoniczy do storny Pogodynka.pl
 	//wyciaganie danych z tabeli
 	private void CalculateTemp(int [] tabTemp , int liczba){
 		
@@ -43,57 +44,56 @@ public class Division {
 			pageResults.setTemp9h(tabTemp[liczba-72], 1);
 			pageResults.setTemp6h(tabTemp[liczba-73], 1);
 			pageResults.setTemp3h(tabTemp[liczba-74], 1);
-			
-		
-			
-		
+	
 		
 	}
 	
 	
 	
 	
-	
-	
-	
-	
-	
-	
 	//POGODYNKA INDEX 1
-	//dzielenie html z pogodynki
-	public void divisionPogodynka(){
+	//parsowanie html z pogodynka.pl
+	public void divisionPogodynka(URL url){
+		
+		String oneHtmlLine = null;
+		String word = null;
 		int tabTemp[] = new int[100];
-		int flaga = 0 ;
-		File file = new File("pogodynka.txt");
-	    Scanner in = null;
-	    String wyr;
-		try
-			{
-				in = new Scanner(file);
-			} 
-			catch (FileNotFoundException e) 
-			{
-				e.printStackTrace();
-			}
-	 
-	      String zdanie = in.nextLine();
-	     
-				StringTokenizer stringTokenizer ;
-					while (in.hasNextLine()) {
-						stringTokenizer = new StringTokenizer(zdanie, "=;<>\"&,()");
-					zdanie = in.nextLine();
-					while(stringTokenizer.hasMoreTokens()){
-						wyr = stringTokenizer.nextToken();
-						if(wyr.equals("'temperatura'")){
-							tabTemp[flaga]= Integer.parseInt(stringTokenizer.nextToken());
-							flaga++;
+		int flag = 0 ;
+		StringTokenizer stringTokenizer = null ;
+		BufferedReader allHtml = null;
+		//sciaganie zawartosci strony
+		try {
+			allHtml = new BufferedReader(
+			        new InputStreamReader(
+			         url.openStream()   // zwraca InputStream zwi¹zany z URLem
+			         )
+			         );
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		//wyiaganie temperatur
+		try {
+			while ((oneHtmlLine = allHtml.readLine()) != null) {
+					stringTokenizer = new StringTokenizer(oneHtmlLine, "=;<>\"&,()");
+						while(stringTokenizer.hasMoreTokens()){
+							word = stringTokenizer.nextToken();
+								if(word.equals("'temperatura'")){
+									tabTemp[flag]= Integer.parseInt(stringTokenizer.nextToken());
+									flag++;
 						}
+					}
+			     }
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
 					
-						
-					}
-	
-					}
-					CalculateTemp(tabTemp,flaga);
+					CalculateTemp(tabTemp,flag);
 	}
 
 	
@@ -103,43 +103,62 @@ public class Division {
 	//WEATHERONLINE INDEX 0
 	//dzielenie html z weatheronline
 	//weatheronline wydobywa tylko pogode na nastepne 4 dni
-	public void divisionWeatheronline(){
-		File file = new File("weatheronline.txt");
-	    Scanner in = null;
-	    String wyr;
-		try
-			{
-				in = new Scanner(file);
-			} 
-			catch (FileNotFoundException e) 
-			{
-				e.printStackTrace();
-			}
-	 
-	      String zdanie = in.nextLine();
-	      int i = 0 ;
-				StringTokenizer stringTokenizer ;
-					while (in.hasNextLine()) {
-						stringTokenizer = new StringTokenizer(zdanie, "=;<>\"&");
-					zdanie = in.nextLine();
+	public void divisionWeatheronline(URL url){
+		int i = 0 ;
+	    String word = null;
+		StringTokenizer stringTokenizer = null ;
+		String oneHtmlLine = null;
+	    BufferedReader allHtml = null;
+		try {
+			//sciaganie strony weatheronline.pl
+			allHtml = new BufferedReader(
+			        new InputStreamReader(
+			         url.openStream()   // zwraca InputStream zwi¹zany z URLem
+			         )
+			         );
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			while ((oneHtmlLine = allHtml.readLine()) != null) {
+				   
+						stringTokenizer = new StringTokenizer(oneHtmlLine, "=;<>\"&,()");
+					
 					while(stringTokenizer.hasMoreTokens()){
-						wyr = stringTokenizer.nextToken();
-						
-						if(wyr.equals("Temp_plus") || wyr.equals("Temp_minus")){
-							i++;
+						word = stringTokenizer.nextToken();
+							if(word.equals("Temp_plus") || word.equals("Temp_minus")){
+								i++;
 							
-							if(i == 5)
-							pageResults.setTempToday(Integer.parseInt(stringTokenizer.nextToken()),0);
-							if(i == 6)
-								pageResults.setTemp1d(Integer.parseInt(stringTokenizer.nextToken()),0);
-							if(i == 7)
-								pageResults.setTemp2d(Integer.parseInt(stringTokenizer.nextToken()),0);
-							if(i == 8)
-								pageResults.setTemp3d(Integer.parseInt(stringTokenizer.nextToken()),0);
+								if(i == 5)
+									pageResults.setTempToday(Integer.parseInt(stringTokenizer.nextToken()),0);
+								if(i == 6)
+									pageResults.setTemp1d(Integer.parseInt(stringTokenizer.nextToken()),0);
+								if(i == 7)
+									pageResults.setTemp2d(Integer.parseInt(stringTokenizer.nextToken()),0);
+								if(i == 8)
+									pageResults.setTemp3d(Integer.parseInt(stringTokenizer.nextToken()),0);
 						}
+					
+						
+					
+
 					}
+			     }
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+						
+						
+					
 				    
-				}
+				
 	}
 
 }

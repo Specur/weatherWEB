@@ -21,6 +21,7 @@ import com.packt.webstore.service.*;
 @Controller
 public class ProductControler {
 	
+	//mapowanie na stone startowa
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 		public String getAddNewProductForm(Model model) { 
 			 City city = new City();
@@ -35,40 +36,38 @@ public class ProductControler {
 		}
 		
 	
-	
+	//mapowanie na strony z miastami
 	 @RequestMapping("/products/{city}")
 	 public String list(Model model , @PathVariable("city") String city) {
 		 
-		 PageResults iphone = new  PageResults(); 
+		 //deklaracja obiektu PageResults do ktorego bedziemy zapisywac pogode ze wszystkich stron
+		 PageResults weatherAllWebside = new  PageResults(); 
+		 //Przypisujemy PageResults do naszego obiektu parsujacego storny
+		 Division division = new Division(weatherAllWebside);
 		 
 		 URL urlWeatherOnline = null;
 		 URL urlPogodynka = null;
 		try {
+			//Odpowiednie linki dla poszczegolnych stron
 			urlWeatherOnline = new URL("http://www.weatheronline.pl/Polska/"+city);
 			urlPogodynka = new URL("http://www.pogodynka.pl/polska/"+city+"_"+city);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 Download downloadWeatherOnline = new Download(urlWeatherOnline,"weatheronline.txt");
-		 Download downloadPogodynka = new Download(urlPogodynka,"pogodynka.txt");
-		 try {
-			downloadWeatherOnline.readAndSave();
-			downloadPogodynka.readAndSave();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 Division division = new Division(iphone);
-		 division.divisionWeatheronline();
-		 division.divisionPogodynka();
+		//wysylamy linki do parsera ktory wydobywa dane i od razu zapisuje je do naszego
+		//obiektu przechowujacego dane
+		 division.divisionWeatheronline(urlWeatherOnline);
+		 division.divisionPogodynka(urlPogodynka);
 		 
 		 
 		 
 		 
 		 
+
 		 
-		 
+		 //przeslanie dni tygodnia do HTML
+		 // ten fragment trzeba poprawic
 		 Date currentDate = new Date();
 		 SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		 Calendar calendar = Calendar.getInstance();
@@ -107,6 +106,8 @@ public class ProductControler {
 		 calendar.add(Calendar.DAY_OF_MONTH, 1);
 		 String dateString16 = dateFormat.format(calendar.getTime());
 		 
+		 //wyslanie obiektow do modelu
+		 //ten fragment trzeba poprawwic
 		 model.addAttribute("dataDzis" , dateString);
 		 model.addAttribute("dataDzis1" , dateString1);
 		 model.addAttribute("dataDzis2" , dateString2);
@@ -125,28 +126,28 @@ public class ProductControler {
 		 model.addAttribute("dataDzis15" , dateString15);
 		 model.addAttribute("dataDzis16" , dateString16);
 		 
-		 model.addAttribute("tempNow", iphone.getTempNow());
-		 model.addAttribute("tempToday", iphone.getTempToday());
-		 model.addAttribute("temp3h", iphone.getTemp3h());
-		 model.addAttribute("temp6h", iphone.getTemp6h());
-		 model.addAttribute("temp9h", iphone.getTemp9h());
-		 model.addAttribute("temp12h", iphone.getTemp12h());
-		 model.addAttribute("temp1d", iphone.getTemp1d());
-		 model.addAttribute("temp2d", iphone.getTemp2d());
-		 model.addAttribute("temp3d", iphone.getTemp3d());
-		 model.addAttribute("temp4d", iphone.getTemp4d());
-		 model.addAttribute("temp5d", iphone.getTemp5d());
-		 model.addAttribute("temp6d", iphone.getTemp6d());
-		 model.addAttribute("temp7d", iphone.getTemp7d());
-		 model.addAttribute("temp8d", iphone.getTemp8d());
-		 model.addAttribute("temp9d", iphone.getTemp9d());
-		 model.addAttribute("temp10d", iphone.getTemp10d());
-		 model.addAttribute("temp11d", iphone.getTemp11d());
-		 model.addAttribute("temp12d", iphone.getTemp12d());
-		 model.addAttribute("temp13d", iphone.getTemp13d());
-		 model.addAttribute("temp14d", iphone.getTemp14d());
-		 model.addAttribute("temp15d", iphone.getTemp15d());
-		 model.addAttribute("temp16d", iphone.getTemp16d());
+		 model.addAttribute("tempNow", weatherAllWebside.getTempNow());
+		 model.addAttribute("tempToday", weatherAllWebside.getTempToday());
+		 model.addAttribute("temp3h", weatherAllWebside.getTemp3h());
+		 model.addAttribute("temp6h", weatherAllWebside.getTemp6h());
+		 model.addAttribute("temp9h", weatherAllWebside.getTemp9h());
+		 model.addAttribute("temp12h", weatherAllWebside.getTemp12h());
+		 model.addAttribute("temp1d", weatherAllWebside.getTemp1d());
+		 model.addAttribute("temp2d", weatherAllWebside.getTemp2d());
+		 model.addAttribute("temp3d", weatherAllWebside.getTemp3d());
+		 model.addAttribute("temp4d", weatherAllWebside.getTemp4d());
+		 model.addAttribute("temp5d", weatherAllWebside.getTemp5d());
+		 model.addAttribute("temp6d", weatherAllWebside.getTemp6d());
+		 model.addAttribute("temp7d", weatherAllWebside.getTemp7d());
+		 model.addAttribute("temp8d", weatherAllWebside.getTemp8d());
+		 model.addAttribute("temp9d", weatherAllWebside.getTemp9d());
+		 model.addAttribute("temp10d", weatherAllWebside.getTemp10d());
+		 model.addAttribute("temp11d", weatherAllWebside.getTemp11d());
+		 model.addAttribute("temp12d", weatherAllWebside.getTemp12d());
+		 model.addAttribute("temp13d", weatherAllWebside.getTemp13d());
+		 model.addAttribute("temp14d", weatherAllWebside.getTemp14d());
+		 model.addAttribute("temp15d", weatherAllWebside.getTemp15d());
+		 model.addAttribute("temp16d", weatherAllWebside.getTemp16d());
 		
 		 return "products";   
 	 }
