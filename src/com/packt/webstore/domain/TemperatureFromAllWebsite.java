@@ -1,9 +1,7 @@
 package com.packt.webstore.domain;
 
-import org.springframework.stereotype.Component;
-
 //klasa przechowujaca wszystkie temperatury dla poszczegolnego miasta
-public class PageResults {
+public class TemperatureFromAllWebsite {
 	
 	private Temperature tempNow;
 	private Temperature tempToday;
@@ -28,7 +26,7 @@ public class PageResults {
 	private Temperature temp15d;
 	private Temperature temp16d;
 	
-	public PageResults(){
+	public TemperatureFromAllWebsite(){
 		tempNow = new Temperature();
 		temp16d = new Temperature();
 		temp15d = new Temperature();
