@@ -30,6 +30,8 @@ public class Division {
 			pageResults.setTemp10d(tabTemp[liczba-12], 1);
 			pageResults.setTemp9d(tabTemp[liczba-14], 1);
 			pageResults.setTemp8d(tabTemp[liczba-16], 1);
+			pageResults.setTempNow((int)(tabTemp[liczba-73]+tabTemp[liczba-72])/2, 1);
+			
 			pageResults.setTemp7d((int)(tabTemp[liczba-18]+tabTemp[liczba-19]+tabTemp[liczba-20])/3, 1);
 			
 			pageResults.setTemp6d((int)(tabTemp[liczba-24]+tabTemp[liczba-25]+tabTemp[liczba-26]+tabTemp[liczba-27]+tabTemp[liczba-28])/5, 1);
@@ -57,6 +59,7 @@ public class Division {
 		
 		String oneHtmlLine = null;
 		String word = null;
+		int tempNow = 0;
 		int tabTemp[] = new int[100];
 		int flag = 0 ;
 		StringTokenizer stringTokenizer = null ;
@@ -75,13 +78,14 @@ public class Division {
 		//wyiaganie temperatur
 		try {
 			while ((oneHtmlLine = allHtml.readLine()) != null) {
-					stringTokenizer = new StringTokenizer(oneHtmlLine, "=;<>\"&,()");
+					stringTokenizer = new StringTokenizer(oneHtmlLine , "=;<>\"&,()");
 						while(stringTokenizer.hasMoreTokens()){
 							word = stringTokenizer.nextToken();
 								if(word.equals("'temperatura'")){
 									tabTemp[flag]= Integer.parseInt(stringTokenizer.nextToken());
 									flag++;
 						}
+								
 					}
 			     }
 		} catch (NumberFormatException e) {
