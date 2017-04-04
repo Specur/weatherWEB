@@ -10,10 +10,10 @@ import com.packt.webstore.domain.TemperatureFromAllWebsite;
 
 //WEATHERONLINE INDEX 0
 //POGODYNKA INDEX 1
-public class ParsingWeather {
+public class WeatherParser {
 	private TemperatureFromAllWebsite pageResults;
 
-	public ParsingWeather(TemperatureFromAllWebsite pageResults) {
+	public WeatherParser(TemperatureFromAllWebsite pageResults) {
 		this.pageResults = pageResults;
 	}
 

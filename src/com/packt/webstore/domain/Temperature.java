@@ -1,6 +1,5 @@
 package com.packt.webstore.domain;
 
-//obiekt przedstawiajacy temperature
 public class Temperature {
 	private int[] temperature = new int[5];
 	private int[] websidePutData = new int[5];
@@ -17,7 +16,7 @@ public class Temperature {
 		websidePutData[indexWebside] = 1;
 	}
 
-	// liczy srednia ze wszystkich stron
+	
 	public int getAverage() {
 		int average = 0;
 		int count = 0;

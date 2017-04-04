@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.packt.webstore.domain.City;
 import com.packt.webstore.domain.Smog;
 import com.packt.webstore.domain.TemperatureFromAllWebsite;
-import com.packt.webstore.service.ParsingSmog;
-import com.packt.webstore.service.ParsingWeather;
+import com.packt.webstore.service.SmogParser;
+import com.packt.webstore.service.WeatherParser;
 
 @Controller
 public class WeatherControler {
@@ -24,18 +24,21 @@ public class WeatherControler {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String mappingOnWelcome(Model model) {
 		Smog smog = new Smog();
-		ParsingSmog parsingSmog = new ParsingSmog(smog);
+		SmogParser parsingSmog = new SmogParser(smog);
 		URL urlSmog = null;
-		
+		City city = new City();
 		try {
 			urlSmog = new URL("http://powietrzewkrakowie.pl");
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		parsingSmog.getSmog(urlSmog);
-		
-		City city = new City();
+		parsingSmog.fetchDataFromPowietrzewkrakowie(urlSmog);
+		addAttributeToModelWelcome(model, smog, city);
+		return "addProduct";
+	}
+
+	private void addAttributeToModelWelcome(Model model, Smog smog, City city) {
 		model.addAttribute("Sensor1" , smog.getAmountUGM3(0));
 		model.addAttribute("Sensor2" , smog.getAmountUGM3(1));
 		model.addAttribute("Sensor3" , smog.getAmountUGM3(2));
@@ -43,7 +46,6 @@ public class WeatherControler {
 		model.addAttribute("Sensor5" , smog.getAmountUGM3(4));
 		model.addAttribute("Sensor6" , smog.getAmountUGM3(5));
 		model.addAttribute("city", city);
-		return "addProduct";
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.POST)
@@ -52,30 +54,34 @@ public class WeatherControler {
 	}
 
 	@RequestMapping("/weather/{city}")
-	public String mappingWebsiteWithCity(Model model, @PathVariable("city") String city) {
+	public String mappingOnCity(Model model, @PathVariable("city") String city) {
 
 		TemperatureFromAllWebsite weatherAllWebsite = new TemperatureFromAllWebsite();
-		ParsingWeather division = new ParsingWeather(weatherAllWebsite);
+		WeatherParser division = new WeatherParser(weatherAllWebsite);
 		
 
 		URL urlWeatherOnline = null;
 		URL urlPogodynka = null;
+		
 		try {
 			urlWeatherOnline = new URL("http://www.weatheronline.pl/Polska/" + city);
 			urlPogodynka = new URL("http://www.pogodynka.pl/polska/" + city + "_" + city);
+
+			
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		division.divisionWeatheronline(urlWeatherOnline);
 		division.divisionPogodynka(urlPogodynka);
+		
 
-		addAttributeToModel(model, weatherAllWebsite);
+		addAttributeToModelweather(model, weatherAllWebsite);
 
 		return "weather";
 	}
 
-	private void addAttributeToModel(Model model, TemperatureFromAllWebsite weatherAllWebsite) {
+	private void addAttributeToModelweather(Model model, TemperatureFromAllWebsite weatherAllWebsite) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		Calendar calendar = Calendar.getInstance();
 		dateFormat.format(calendar.getTime());
