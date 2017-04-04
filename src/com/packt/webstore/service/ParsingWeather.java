@@ -10,16 +10,14 @@ import com.packt.webstore.domain.TemperatureFromAllWebsite;
 
 //WEATHERONLINE INDEX 0
 //POGODYNKA INDEX 1
-public class WebsiteDivision {
+public class ParsingWeather {
 	private TemperatureFromAllWebsite pageResults;
 
-	public WebsiteDivision(TemperatureFromAllWebsite pageResults) {
+	public ParsingWeather(TemperatureFromAllWebsite pageResults) {
 		this.pageResults = pageResults;
 	}
 
-	// algorytm pomoniczy do storny Pogodynka.pl
-	// wyciaganie danych z tabeli
-	private void CalculateTemp(int[] tabTemp, int liczba) {
+	private void CalculateTempForPogodynka(int[] tabTemp, int liczba) {
 
 		pageResults.setTemp16d(tabTemp[liczba - 1], 1);
 		pageResults.setTemp15d(tabTemp[liczba - 2], 1);
@@ -56,7 +54,6 @@ public class WebsiteDivision {
 	}
 
 	// POGODYNKA INDEX 1
-	// parsowanie html z pogodynka.pl
 	public void divisionPogodynka(URL url) {
 
 		String oneHtmlLine = null;
@@ -66,8 +63,7 @@ public class WebsiteDivision {
 		StringTokenizer stringTokenizer = null;
 		BufferedReader allHtml = null;
 		try {
-			allHtml = new BufferedReader(new InputStreamReader(url.openStream() 
-			));
+			allHtml = new BufferedReader(new InputStreamReader(url.openStream()));
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -92,12 +88,9 @@ public class WebsiteDivision {
 			e.printStackTrace();
 		}
 
-		CalculateTemp(tabTemp, flag);
+		CalculateTempForPogodynka(tabTemp, flag);
 	}
-
-	// WEATHERONLINE INDEX 0
-	// dzielenie html z weatheronline
-	// weatheronline wydobywa tylko pogode na nastepne 4 dni
+//WEATHERONLINE INDEX 0
 	public void divisionWeatheronline(URL url) {
 		int i = 0;
 		String word = null;
@@ -105,8 +98,7 @@ public class WebsiteDivision {
 		String oneHtmlLine = null;
 		BufferedReader allHtml = null;
 		try {
-			allHtml = new BufferedReader(new InputStreamReader(url.openStream() 
-			));
+			allHtml = new BufferedReader(new InputStreamReader(url.openStream()));
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -143,5 +135,6 @@ public class WebsiteDivision {
 		}
 
 	}
+
 
 }

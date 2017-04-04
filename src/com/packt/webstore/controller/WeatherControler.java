@@ -13,15 +13,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.packt.webstore.domain.City;
+import com.packt.webstore.domain.Smog;
 import com.packt.webstore.domain.TemperatureFromAllWebsite;
-import com.packt.webstore.service.WebsiteDivision;
+import com.packt.webstore.service.ParsingSmog;
+import com.packt.webstore.service.ParsingWeather;
 
 @Controller
 public class WeatherControler {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String mappingOnWelcome(Model model) {
+		Smog smog = new Smog();
+		ParsingSmog parsingSmog = new ParsingSmog(smog);
+		URL urlSmog = null;
+		
+		try {
+			urlSmog = new URL("http://powietrzewkrakowie.pl");
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		parsingSmog.getSmog(urlSmog);
+		
 		City city = new City();
+		model.addAttribute("Sensor1" , smog.getAmountUGM3(0));
+		model.addAttribute("Sensor2" , smog.getAmountUGM3(1));
+		model.addAttribute("Sensor3" , smog.getAmountUGM3(2));
+		model.addAttribute("Sensor4" , smog.getAmountUGM3(3));
+		model.addAttribute("Sensor5" , smog.getAmountUGM3(4));
+		model.addAttribute("Sensor6" , smog.getAmountUGM3(5));
 		model.addAttribute("city", city);
 		return "addProduct";
 	}
@@ -35,7 +55,8 @@ public class WeatherControler {
 	public String mappingWebsiteWithCity(Model model, @PathVariable("city") String city) {
 
 		TemperatureFromAllWebsite weatherAllWebsite = new TemperatureFromAllWebsite();
-		WebsiteDivision division = new WebsiteDivision(weatherAllWebsite);
+		ParsingWeather division = new ParsingWeather(weatherAllWebsite);
+		
 
 		URL urlWeatherOnline = null;
 		URL urlPogodynka = null;

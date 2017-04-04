@@ -1,4 +1,5 @@
 package com.packt.webstore.controller;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,11 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 //ten fragment jest do testow
 @Controller
 public class HomeController {
-	   @RequestMapping("/add")   
-	   public String welcome(Model model) {
-		   model.addAttribute("greeting", "Witaj");
-	      return "welcome";  
-	      }
-	   
+	@RequestMapping("/add")
+	public String welcome(Model model) {
+		model.addAttribute("greeting", "Witaj");
+		return "welcome";
+	}
 
 }
