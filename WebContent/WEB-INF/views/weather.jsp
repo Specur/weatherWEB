@@ -12,10 +12,10 @@
       
       
        <p>Temperatura teraz: 	<b> ${tempNow}</b></p>
-      <p>Temperatura za 3h 	<b> ${temp3h}</b></p>
-      <p>Temperatura za 6h  	<b> ${temp6h}</b></p>
-      <p>Temperatura za 9h  	<b> ${temp9h}</b></p>
-      <p>Temperatura za 12h  	<b> ${temp12h}</b></p>
+      <p>Temperatura o 14 	<b> ${temp3h}</b></p>
+      <p>Temperatura o 17  	<b> ${temp6h}</b></p>
+      <p>Temperatura o 20  	<b> ${temp9h}</b></p>
+      <p>Temperatura o 23  	<b> ${temp12h}</b></p>
       <p>Temperatura dziś 	<b> ${tempToday}</b></p>
       <p>${dataDzis1} 	<b> ${temp1d}</b></p>
       <p>${dataDzis2} 	<b> ${temp2d}</b></p>

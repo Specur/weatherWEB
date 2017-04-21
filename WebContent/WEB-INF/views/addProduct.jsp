@@ -17,5 +17,13 @@ Prosze o wpisanie nazwy miejscowosci:</br>
 <form:input id="name" path="name" type="text" class="form:input-large"/> 
 <input type="submit" id="btnAdd" class="btn btn-primary" value ="Dodaj"/> 
  </form:form> 
+ 
+ Smog w Krakowie:</br>
+Al. Krasinskiego	${Sensor1}  g/m3	</br>
+ul. Bulwarowa		${Sensor2}  g/m3</br>
+ul. Bujaka			${Sensor3}  g/m3</br>
+ul. Dietla			${Sensor4}  g/m3</br>
+os. Piastow			${Sensor5}  g/m3</br>
+ul. Zloty Rog		${Sensor6}  g/m3</br>
 </body>
 </html>
