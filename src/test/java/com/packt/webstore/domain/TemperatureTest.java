@@ -34,13 +34,15 @@ public class TemperatureTest
 	@Test
 	public void temperatureForFourVariableTest() {
 	      Temperature temp = new Temperature(); 
-	      temp.setTemp(5, 0);
+	      temp.setTemp(0, 0);
 	      temp.setTemp(10, 1);
 	      temp.setTemp(25, 2);
 	      temp.setTemp(40, 3);
 	      
 		Assert.assertEquals(20,temp.getAverage());
 		} 
+	
+	
 	}
 	
 

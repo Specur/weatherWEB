@@ -1,8 +1,6 @@
 package com.packt.webstore.domain;
 
-//klasa przechowujaca aktualnie wyszukiwane miasto
-public class City {
-
+public class Peak {
 	private String name;
 
 	public String getName() {

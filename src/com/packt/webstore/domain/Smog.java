@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Smog {
 	private String placeSensorInKrakow;
-	ArrayList<Integer> amountUGM3 = new ArrayList<Integer>();
+	private ArrayList<Integer> amountUGM3 = new ArrayList<Integer>();
 	public int getAmountUGM3(int value) {
 		return amountUGM3.get(value);
 	}
