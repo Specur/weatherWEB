@@ -3,6 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
 
 <html>
 <head>
@@ -25,5 +26,18 @@ ul. Bujaka			${Sensor3}  g/m3</br>
 ul. Dietla			${Sensor4}  g/m3</br>
 os. Piastow			${Sensor5}  g/m3</br>
 ul. Zloty Rog		${Sensor6}  g/m3</br>
+ </br>
+ 
+ 
+ Podaj nazwe szczytu:
+ <FORM ACTION="http://localhost:8080/spring-webmvc/peak/"
+      METHOD="POST">
+    <INPUT TYPE="TEXT" NAME="peakName"><BR>
+    <INPUT TYPE="SUBMIT" VALUE="Wyslij">
+</FORM>
+
+
+
+ 
 </body>
 </html>

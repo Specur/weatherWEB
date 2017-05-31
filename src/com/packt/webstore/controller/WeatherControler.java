@@ -11,13 +11,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.packt.webstore.domain.City;
+import com.packt.webstore.domain.Peak;
 import com.packt.webstore.domain.Smog;
 import com.packt.webstore.domain.TemperatureFromAllWebsite;
 import com.packt.webstore.service.SmogParser;
 import com.packt.webstore.service.WeatherParser;
-
 @Controller
 public class WeatherControler {
 
@@ -52,7 +53,16 @@ public class WeatherControler {
 	public String catchMappingOnCity(@ModelAttribute("city") City city) {
 		return "redirect:/weather/" + city.getName();
 	}
+	
 
+    @RequestMapping(value = "/peak" ,method = RequestMethod.POST)
+    public String greetingSubmit(Model model ,@RequestParam("peakName") String peakName) {
+    	
+    	model.addAttribute("szczyt", peakName);
+        return "/peak";
+    }
+    
+	
 	@RequestMapping("/weather/{city}")
 	public String mappingOnCity(Model model, @PathVariable("city") String city) {
 
