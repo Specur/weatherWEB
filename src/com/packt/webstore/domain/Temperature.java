@@ -11,9 +11,11 @@ public class Temperature {
 		}
 	}
 
-	public void setTemp(int temp, int indexWebside) {
+	public Temperature setTemp(int temp, int indexWebside) {
 		temperature[indexWebside] = temp;
 		websidePutData[indexWebside] = 1;
+		
+		return this;
 	}
 
 	
@@ -31,6 +33,10 @@ public class Temperature {
 
 		return 0;
 
+	}
+	
+	public String toString(){
+		return " "+getAverage();
 	}
 
 }
