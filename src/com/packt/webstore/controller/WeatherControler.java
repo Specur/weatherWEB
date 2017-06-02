@@ -60,6 +60,7 @@ public class WeatherControler {
     @RequestMapping(value = "/peak" ,method = RequestMethod.POST)
     public String greetingSubmit(Model model ,@RequestParam("peakName") String peakName) {
     	
+    	model.addAttribute("abc", "abc");
     	model.addAttribute("szczyt", peakName);
         return "/peak";
     }

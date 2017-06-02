@@ -11,6 +11,7 @@
 <tr>
             Nazwa szczytu:
             <td>${szczyt}</td>
+            ${abc}
          </tr>
          </br>
          temperatura ....
