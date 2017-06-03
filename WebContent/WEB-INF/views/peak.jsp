@@ -5,15 +5,26 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title> ${szczyt} - prognoza pogody</title>
 </head>
 <body>
 <tr>
             Nazwa szczytu:
             <td>${szczyt}</td>
-            ${abc}
+             
+           
          </tr>
          </br>
-         temperatura ....
+         dzien      : ${calendar}
+         </br>
+         pora dnia  : ${timeOfTheDay}
+         </br>
+         temperatura najwyzsza: ${temph}
+         </br>
+         temperatura najnizsza: ${templ}
+         </br>
+          deszcz(mm): ${rain}
+         </br>
+         
 </body>
 </html>
