@@ -51,12 +51,12 @@ public class WeatherControler {
 	}
 
 	private void addAttributeToModelWelcome(Model model, Smog smog, City city) {
-		model.addAttribute("Sensor1" , smog.getAmountUGM3(0));
-		model.addAttribute("Sensor2" , smog.getAmountUGM3(1));
-		model.addAttribute("Sensor3" , smog.getAmountUGM3(2));
-		model.addAttribute("Sensor4" , smog.getAmountUGM3(3));
-		model.addAttribute("Sensor5" , smog.getAmountUGM3(4));
-		model.addAttribute("Sensor6" , smog.getAmountUGM3(5));
+		model.addAttribute("Sensor1" ,0);
+		model.addAttribute("Sensor2" ,0);
+		model.addAttribute("Sensor3" ,0);
+		model.addAttribute("Sensor4" ,0);
+		model.addAttribute("Sensor5" ,0);
+		model.addAttribute("Sensor6" ,0);
 		model.addAttribute("city", city);
 		
 	}

@@ -6,10 +6,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class HomeController {
-	@RequestMapping("/add")
-	public String welcome(Model model) {
+	@RequestMapping("/peaks")
+	public String peaks(Model model) {
 		model.addAttribute("greeting", "Witaj");
-		return "welcome";
+		return "peaks";
+	}
+	
+	@RequestMapping("/smogkrakow")
+	public String smogkrakow(Model model) {
+		model.addAttribute("greeting", "Witaj");
+		return "smogkrakow";
 	}
 
 }
