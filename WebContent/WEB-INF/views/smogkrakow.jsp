@@ -34,7 +34,7 @@
 				<a href="<c:url value="/" />" class="branding"> <img
 					src="<c:url value="/resources/images/logo.png" />" alt="" class="logo">
 					<div class="logo-type">
-						<h1 class="site-title">Weather Project</h1>
+						<h1 class="site-title">Weather Projectt</h1>
 						<small class="site-description">...</small>
 					</div>
 				</a>
