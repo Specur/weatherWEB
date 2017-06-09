@@ -65,6 +65,8 @@ public class SmogParser {
 	private void checkCorrectDataForPowietrzewkrakowie(String word, String word2) {
 		if (word.equals("µg/m3") && word2.length() < 5) {
 			pageResults.setAmountUGM3(Integer.parseInt(word2.trim()));
+		}else{
+			pageResults.setAmountUGM3(0);
 		}
 	}
 
