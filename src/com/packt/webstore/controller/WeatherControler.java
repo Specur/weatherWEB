@@ -7,6 +7,9 @@ import java.nio.charset.Charset;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -48,7 +51,11 @@ public class WeatherControler {
 		model.addAttribute("greeting", "Witaj");
 		return "peaks";
 	}
-	
+	@RequestMapping("/weekendWeather")
+	public String weekendWeatherEntry(Model model) {
+		model.addAttribute("greeting", "Witaj");
+		return "weekendWeather";
+	}
 	@RequestMapping("/authors")
 	public String authors(Model model) {
 		model.addAttribute("greeting", "Witaj");
@@ -95,9 +102,9 @@ public class WeatherControler {
 		// String peakName2 = peakName;
 		// peakName2 = peakName2.replaceAll(" ","-");
 		// peakName2 = peakName2.replace("ł", "l");
-		byte[] peakNameNew_ = peakName.getBytes(ISO_8859_1); 
-		String peakNameNew = new String(peakNameNew_, UTF_8); 
-		
+		byte[] peakNameNew_ = peakName.getBytes(ISO_8859_1);
+		String peakNameNew = new String(peakNameNew_, UTF_8);
+
 		/*
 		String peakName2 = peakName.replace("&#322;", "l").replace("&#261;", "a").replace("&#281;", "e")
 				.replace("&#324;", "n").replace("&#263;", "c").replace("&#378;", "z").replace("&#380;", "z")
@@ -105,11 +112,11 @@ public class WeatherControler {
 		peakName2 = org.apache.commons.lang3.StringUtils.stripAccents(peakName2);
 		*/
 		// ł Ł ą ę ć ź ż ś Ś Ż Ź Ć
-		
+
 		// do parsowania
 		String peakName3 = peakNameNew.replace(" ", "-").replace("%20", "-");
 		peakName3 = org.apache.commons.lang3.StringUtils.stripAccents(peakName3);
-		
+
 		//do wyświetlania w widoku
 		String peakNameForModel_ = peakNameNew.replace(" ", " ").replace("%20", " ").replace("%C3%B3", "ó").replace("%C4%85", "ą")
 				.replace("%C4%87", "ć").replace("%C4%99", "ę").replace("%C5%82", "ł").replace("%C5%84", "ń")
@@ -166,13 +173,13 @@ public class WeatherControler {
 
 		URL urlWeatherOnline = null;
 		URL urlPogodynka = null;
-		
-		byte[] cityNew_ = city.getBytes(ISO_8859_1); 
-		String cityNew = new String(cityNew_, UTF_8); 
-		
+
+		byte[] cityNew_ = city.getBytes(ISO_8859_1);
+		String cityNew = new String(cityNew_, UTF_8);
+
 		String cityName = cityNew.replace(" ", "-").replace("%20", "-");
 		cityName = org.apache.commons.lang3.StringUtils.stripAccents(cityNew);
-		
+
 		//do wyświetlania w widoku
 		String peakNameForModel_ = city.replace(" ", " ").replace("%20", " ").replace("%C3%B3", "ó").replace("%C4%85", "ą")
 				.replace("%C4%87", "ć").replace("%C4%99", "ę").replace("%C5%82", "ł").replace("%C5%84", "ń")
@@ -180,7 +187,7 @@ public class WeatherControler {
 				.replace("%C4%84", "Ą").replace("%C4%98", "Ę").replace("%C5%81", "Ł").replace("%C5%83", "Ń")
 				.replace("%C3%93", "Ó").replace("%C5%9A", "Ś").replace("%C5%B9", "Ź").replace("%C5%BB", "Ż");
 		String peakNameForModel = peakNameForModel_.substring(0, 1).toUpperCase() + peakNameForModel_.substring(1);;
-			
+
 		try {
 			urlWeatherOnline = new URL("http://www.weatheronline.pl/Polska/" + cityName);
 			urlPogodynka = new URL("http://www.pogodynka.pl/polska/" + cityName + "_" + cityName);
@@ -253,6 +260,85 @@ public class WeatherControler {
 		calendar.add(Calendar.DAY_OF_MONTH, 1);
 		weatherCalendar.add(dateFormat.format(calendar.getTime()));
 		return weatherCalendar;
+	}
+	@RequestMapping(value = "/weekend", method = RequestMethod.POST)
+	public String getWeatherForWeekend(Model model, @RequestParam("city") String city) {
+		CollectionWeatherConditions weatherAllWebsite = new CollectionWeatherConditions();
+		WeatherParser division = new WeatherParser(weatherAllWebsite);
+		URL urlPogodynka = null;
+
+		try {
+			urlPogodynka = new URL("http://www.pogodynka.pl/polska/" + city + "_" + city);
+		} catch (MalformedURLException var7) {
+			var7.printStackTrace();
+		}
+
+		division.weatherForWeekend(urlPogodynka);
+		this.addAttributeToModelWeekend(model, weatherAllWebsite);
+		return "weekend";
+	}
+
+	private void addAttributeToModelWeekend(Model model, CollectionWeatherConditions weatherAllWebsite) {
+		Map<String, LocalDate> weatherCalendar = this.daysOfTheNextWeekend();
+		model.addAttribute("calendar", weatherCalendar);
+		model.addAttribute("pressure", weatherAllWebsite.getPressure());
+		model.addAttribute("temperature", weatherAllWebsite.getTemperature().toString());
+		model.addAttribute("wind", weatherAllWebsite.getWind());
+	}
+	private Map<String, LocalDate> daysOfTheNextWeekend() {
+		Map<String, LocalDate> nextWeekendDaysDate = new HashMap();
+		LocalDate date = LocalDate.now();
+		DayOfWeek today = date.getDayOfWeek();
+		switch(today) {
+			case MONDAY:
+				date.plusDays(4);
+				nextWeekendDaysDate.put("Piątek", date);
+				date.plusDays(1);
+				nextWeekendDaysDate.put("Sobota", date);
+				date.plusDays(1);
+				nextWeekendDaysDate.put("Niedziela", date);
+				break;
+			case TUESDAY:
+				date.plusDays(3);
+				nextWeekendDaysDate.put("Piątek", date);
+				date.plusDays(1);
+				nextWeekendDaysDate.put("Sobota", date);
+				date.plusDays(1);
+				nextWeekendDaysDate.put("Niedziela", date);
+				break;
+			case WEDNESDAY:
+				date.plusDays(2);
+				nextWeekendDaysDate.put("Piątek", date);
+				date.plusDays(1);
+				nextWeekendDaysDate.put("Sobota", date);
+				date.plusDays(1);
+				nextWeekendDaysDate.put("Niedziela", date);
+				break;
+			case THURSDAY:
+				date.plusDays(1);
+				nextWeekendDaysDate.put("Piątek", date);
+				date.plusDays(1);
+				nextWeekendDaysDate.put("Sobota", date);
+				date.plusDays(1);
+				nextWeekendDaysDate.put("Niedziela", date);
+				break;
+			case FRIDAY:
+				nextWeekendDaysDate.put("Piątek", date);
+				date.plusDays(1);
+				nextWeekendDaysDate.put("Sobota", date);
+				date.plusDays(1);
+				nextWeekendDaysDate.put("Niedziela", date);
+				break;
+			case SATURDAY:
+				nextWeekendDaysDate.put("Sobota", date);
+				date.plusDays(1);
+				nextWeekendDaysDate.put("Niedziela", date);
+				break;
+			case SUNDAY:
+				nextWeekendDaysDate.put("Niedziela", date);
+		}
+
+		return nextWeekendDaysDate;
 	}
 
 }
