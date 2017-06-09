@@ -1,3 +1,4 @@
+/*
 package test.java.com.packt.webstore.domain;
 import org.junit.Assert;
 import org.junit.Test;
@@ -44,5 +45,5 @@ public class TemperatureTest
 	
 	
 	}
-	
+*/
 

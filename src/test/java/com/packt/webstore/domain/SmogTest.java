@@ -1,3 +1,4 @@
+/*
 package test.java.com.packt.webstore.domain;
 
 import java.util.ArrayList;
@@ -24,3 +25,4 @@ public class SmogTest {
 	}
 
 }
+*/
