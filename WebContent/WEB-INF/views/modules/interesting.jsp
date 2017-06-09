@@ -36,15 +36,15 @@
 			<div class="col-md-4">
 				<h2 class="section-title">Zdjęcia</h2>
 				<div class="photo-grid">
-					<a href="<c:url value="/resources/images/thumb-1.jpg" />" data-lightbox="weather"><img src="<c:url value="/resources/images/thumb-1.jpg" />" alt="#"></a>
-					<a href="<c:url value="/resources/images/thumb-1.jpg" />" data-lightbox="weather"><img src="<c:url value="/resources/images/thumb-1.jpg" />" alt="#"></a>
-					<a href="<c:url value="/resources/images/thumb-1.jpg" />" data-lightbox="weather"><img src="<c:url value="/resources/images/thumb-1.jpg" />" alt="#"></a>
-					<a href="<c:url value="/resources/images/thumb-1.jpg" />" data-lightbox="weather"><img src="<c:url value="/resources/images/thumb-1.jpg" />" alt="#"></a>
-					<a href="<c:url value="/resources/images/thumb-1.jpg" />" data-lightbox="weather"><img src="<c:url value="/resources/images/thumb-1.jpg" />" alt="#"></a>
-					<a href="<c:url value="/resources/images/thumb-1.jpg" />" data-lightbox="weather"><img src="<c:url value="/resources/images/thumb-1.jpg" />" alt="#"></a>
-					<a href="<c:url value="/resources/images/thumb-1.jpg" />" data-lightbox="weather"><img src="<c:url value="/resources/images/thumb-1.jpg" />" alt="#"></a>
-					<a href="<c:url value="/resources/images/thumb-1.jpg" />" data-lightbox="weather"><img src="<c:url value="/resources/images/thumb-1.jpg" />" alt="#"></a>
-					<a href="<c:url value="/resources/images/thumb-1.jpg" />" data-lightbox="weather"><img src="<c:url value="/resources/images/thumb-1.jpg" />" alt="#"></a>
+					<a href="<c:url value="/resources/images/photos/1.jpg" />" data-lightbox="weather"><img src="<c:url value="/resources/images/photos/1_thumb.jpg" />" alt="#"></a>
+					<a href="<c:url value="/resources/images/photos/2.jpg" />" data-lightbox="weather"><img src="<c:url value="/resources/images/photos/2_thumb.jpg" />" alt="#"></a>
+					<a href="<c:url value="/resources/images/photos/3.jpg" />" data-lightbox="weather"><img src="<c:url value="/resources/images/photos/3_thumb.jpg" />" alt="#"></a>
+					<a href="<c:url value="/resources/images/photos/4.jpg" />" data-lightbox="weather"><img src="<c:url value="/resources/images/photos/4_thumb.jpg" />" alt="#"></a>
+					<a href="<c:url value="/resources/images/photos/5.jpg" />" data-lightbox="weather"><img src="<c:url value="/resources/images/photos/5_thumb.jpg" />" alt="#"></a>
+					<a href="<c:url value="/resources/images/photos/6.jpg" />" data-lightbox="weather"><img src="<c:url value="/resources/images/photos/6_thumb.jpg" />" alt="#"></a>
+					<a href="<c:url value="/resources/images/photos/7.jpg" />" data-lightbox="weather"><img src="<c:url value="/resources/images/photos/7_thumb.jpg" />" alt="#"></a>
+					<a href="<c:url value="/resources/images/photos/8.jpg" />" data-lightbox="weather"><img src="<c:url value="/resources/images/photos/8_thumb.jpg" />" alt="#"></a>
+					<a href="<c:url value="/resources/images/photos/9.jpg" />" data-lightbox="weather"><img src="<c:url value="/resources/images/photos/9_thumb.jpg" />" alt="#"></a>
 				</div>
 			</div>
 		</div>

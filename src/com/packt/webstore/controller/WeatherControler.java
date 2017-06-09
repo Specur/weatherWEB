@@ -3,6 +3,7 @@ package com.packt.webstore.controller;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.text.SimpleDateFormat;
@@ -30,6 +31,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import static java.nio.charset.StandardCharsets.*;
 
 @Controller
 public class WeatherControler {
@@ -93,14 +95,30 @@ public class WeatherControler {
 		// String peakName2 = peakName;
 		// peakName2 = peakName2.replaceAll(" ","-");
 		// peakName2 = peakName2.replace("ł", "l");
+		byte[] peakNameNew_ = peakName.getBytes(ISO_8859_1); 
+		String peakNameNew = new String(peakNameNew_, UTF_8); 
+		
+		/*
 		String peakName2 = peakName.replace("&#322;", "l").replace("&#261;", "a").replace("&#281;", "e")
 				.replace("&#324;", "n").replace("&#263;", "c").replace("&#378;", "z").replace("&#380;", "z")
 				.replace("&#347;", "s").replace(" ", "-");
 		peakName2 = org.apache.commons.lang3.StringUtils.stripAccents(peakName2);
+		*/
+		// ł Ł ą ę ć ź ż ś Ś Ż Ź Ć
+		
+		// do parsowania
+		String peakName3 = peakNameNew.replace(" ", "-").replace("%20", "-");
+		peakName3 = org.apache.commons.lang3.StringUtils.stripAccents(peakName3);
+		
+		//do wyświetlania w widoku
+		String peakNameForModel_ = peakNameNew.replace(" ", " ").replace("%20", " ").replace("%C3%B3", "ó").replace("%C4%85", "ą")
+				.replace("%C4%87", "ć").replace("%C4%99", "ę").replace("%C5%82", "ł").replace("%C5%84", "ń")
+				.replace("%C5%9B", "ś").replace("%C5%BA", "ź").replace("%C5%BC", "ż").replace("%C4%86", "Ć")
+				.replace("%C4%84", "Ą").replace("%C4%98", "Ę").replace("%C5%81", "Ł").replace("%C5%83", "Ń")
+				.replace("%C3%93", "Ó").replace("%C5%9A", "Ś").replace("%C5%B9", "Ź").replace("%C5%BB", "Ż");
+		String peakNameForModel = peakNameForModel_.substring(0, 1).toUpperCase() + peakNameForModel_.substring(1);;
 
-		// peakName2 = StringUtils.stripAccents(peakName2);
-
-		Document getURLForHeight = Jsoup.connect("https://www.mountain-forecast.com/peaks/" + peakName2).get();
+		Document getURLForHeight = Jsoup.connect("https://www.mountain-forecast.com/peaks/" + peakName3).get();
 		// Elements newsHeadlines =
 		// doc.select("//*[@id='tabs']/tbody/tr/td[2]/ul/li/a/span[1]");
 
@@ -108,7 +126,7 @@ public class WeatherControler {
 		String heightt = height.get(0).text();
 
 		Document getURLForForecast = Jsoup
-				.connect("https://www.mountain-forecast.com/peaks/" + peakName2 + "/forecasts/" + heightt).get();
+				.connect("https://www.mountain-forecast.com/peaks/" + peakName3 + "/forecasts/" + heightt).get();
 
 		Elements tempHigh = getURLForForecast.select("#forecast-cont > table > tbody > tr:nth-child(11) > td > span");
 		Elements tempLow = getURLForForecast.select("#forecast-cont > table > tbody > tr:nth-child(12) > td > span");
@@ -124,7 +142,7 @@ public class WeatherControler {
 		model.addAttribute("temph", tempHigh);
 		model.addAttribute("templ", tempLow);
 		model.addAttribute("rain", rain);
-		model.addAttribute("szczyt", peakName);
+		model.addAttribute("szczyt", peakNameForModel);
 		return "/peak";
 	}
 
@@ -148,10 +166,24 @@ public class WeatherControler {
 
 		URL urlWeatherOnline = null;
 		URL urlPogodynka = null;
-
+		
+		byte[] cityNew_ = city.getBytes(ISO_8859_1); 
+		String cityNew = new String(cityNew_, UTF_8); 
+		
+		String cityName = cityNew.replace(" ", "-").replace("%20", "-");
+		cityName = org.apache.commons.lang3.StringUtils.stripAccents(cityNew);
+		
+		//do wyświetlania w widoku
+		String peakNameForModel_ = city.replace(" ", " ").replace("%20", " ").replace("%C3%B3", "ó").replace("%C4%85", "ą")
+				.replace("%C4%87", "ć").replace("%C4%99", "ę").replace("%C5%82", "ł").replace("%C5%84", "ń")
+				.replace("%C5%9B", "ś").replace("%C5%BA", "ź").replace("%C5%BC", "ż").replace("%C4%86", "Ć")
+				.replace("%C4%84", "Ą").replace("%C4%98", "Ę").replace("%C5%81", "Ł").replace("%C5%83", "Ń")
+				.replace("%C3%93", "Ó").replace("%C5%9A", "Ś").replace("%C5%B9", "Ź").replace("%C5%BB", "Ż");
+		String peakNameForModel = peakNameForModel_.substring(0, 1).toUpperCase() + peakNameForModel_.substring(1);;
+			
 		try {
-			urlWeatherOnline = new URL("http://www.weatheronline.pl/Polska/" + city);
-			urlPogodynka = new URL("http://www.pogodynka.pl/polska/" + city + "_" + city);
+			urlWeatherOnline = new URL("http://www.weatheronline.pl/Polska/" + cityName);
+			urlPogodynka = new URL("http://www.pogodynka.pl/polska/" + cityName + "_" + cityName);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -161,12 +193,12 @@ public class WeatherControler {
 		division.divisionPogodynka(urlPogodynka);
 		division.divisionWeatheronline(urlWeatherOnline);
 
-		addAttributeToModelweather(model, weatherAllWebsite);
+		addAttributeToModelweather(model, weatherAllWebsite, peakNameForModel);
 
 		return "weather";
 	}
 
-	private void addAttributeToModelweather(Model model, CollectionWeatherConditions weatherAllWebsite) {
+	private void addAttributeToModelweather(Model model, CollectionWeatherConditions weatherAllWebsite, String city) {
 		List<String> weatherCalendar = calculateDay();
 		// dane w tablach ustawione w nastepujacy sposob
 		// teraz 3h 6h 9h 1d 2d 3d 4d 5d 6d 7d 8d 9d 10d 11d 12d 13d 14d 15d 16d
@@ -176,6 +208,7 @@ public class WeatherControler {
 		model.addAttribute("pressure", weatherAllWebsite.getPressure());
 		model.addAttribute("temperature", weatherAllWebsite.getTemperature().toString());
 		model.addAttribute("wind", weatherAllWebsite.getWind());
+		model.addAttribute("city", city);
 
 	}
 

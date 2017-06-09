@@ -69,7 +69,7 @@
 		<main class="main-content">
 		<div class="fullwidth-block">
 			<div class="container">
-				<h2 class="section-title">Pogoda</h2>
+				<h2 class="section-title">Pogoda ${city}</h2>
 			
 					<div class="col-12">
 						   <p>Dni 	<b> ${calendar}</b></p>
