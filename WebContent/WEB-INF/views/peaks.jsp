@@ -72,7 +72,7 @@
 				<h2 class="section-title">Szczyty</h2>
 					<div class="col-12">
 						 Podaj nazwe szczytu:
-						 <FORM ACTION="/peak"
+						 <FORM ACTION="http://localhost:8080/spring-webmvc/peak"
 						      METHOD="POST">
 						    <INPUT TYPE="TEXT" NAME="peakName"><BR>
 						    <INPUT TYPE="SUBMIT" VALUE="Wyslij">
