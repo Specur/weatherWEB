@@ -26,8 +26,12 @@ public class CollectionWeatherConditions {
 		public void setPressure(List<String> pressure) {
 			this.pressure = pressure;
 		}
-		public List<Temperature> getTemperature() {
-			return temperature;
+		public List<String> getTemperature() {
+			List<String> temp = new ArrayList<String>();
+			for(Temperature string : temperature){
+				temp.add(string.toString());
+			}
+			return temp;
 		}
 		public void setTemperature(List<Temperature> temperature) {
 			this.temperature = temperature;
