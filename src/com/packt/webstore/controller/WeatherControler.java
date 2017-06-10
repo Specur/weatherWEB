@@ -213,7 +213,7 @@ public class WeatherControler {
 		// model.addAttribute("description",
 		// weatherAllWebsite.getDescriptionWeather());
 		model.addAttribute("pressure", weatherAllWebsite.getPressure());
-		model.addAttribute("temperature", weatherAllWebsite.getTemperature().toString());
+		model.addAttribute("temperature", weatherAllWebsite.getTemperature());
 		model.addAttribute("wind", weatherAllWebsite.getWind());
 		model.addAttribute("city", city);
 
