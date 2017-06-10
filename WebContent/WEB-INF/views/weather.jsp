@@ -51,7 +51,7 @@
 						<li class="menu-item"><a href="<c:url value="/" />">Strona
 								główna</a></li>
 						<li class="menu-item"><a href="<c:url value="/peaks" />">Szczyty</a></li>
-						<li class="menu-item"><a href="#">Pogoda na weekend</a></li>
+						<li class="menu-item"><a href="<c:url value="/weekendWeather"/>">Pogoda na weekend</a></li>
 						<li class="menu-item"><a href="<c:url value="/smogkrakow" />">Smog
 								Kraków</a></li>
 						<li class="menu-item"><a href="<c:url value="/authors" />">Autorzy</a></li>
@@ -82,6 +82,12 @@
 				<div class="col-12">
 					<p>
 						Dni <b> ${calendar}</b>
+					</p>
+					<p>
+						Dzień <b> ${dayOfWeek}</b>
+					</p>
+					<p>
+						Desc <b> ${description}</b>
 					</p>
 					<p>
 						Wiatr <b> ${wind}</b>
@@ -138,7 +144,7 @@
 					</div>
 					<div class="forecast">
 						<div class="forecast-header">
-							<div class="day">Tuesday</div>
+							<div class="day">${calendar[1]}</div>
 						</div>
 						<!-- .forecast-header -->
 						<div class="forecast-content">
@@ -147,14 +153,19 @@
 									alt="" width=48>
 							</div>
 							<div class="degree">
-								23<sup>o</sup>C
+								${temperature[3]}<sup>o</sup>C
 							</div>
-							<small>18<sup>o</sup></small>
+							<br>
+							 <span><img
+								src="<c:url value="/resources/images/icon-wind.png" />" alt="" style="float:left;">${wind[3]}</span>
+							<br><span><img
+								src="<c:url value="/resources/images/icon-compass.png" />"
+								alt="" style="float:left;">${pressure[3]}</span>
 						</div>
 					</div>
 					<div class="forecast">
 						<div class="forecast-header">
-							<div class="day">Wednesday</div>
+							<div class="day">${calendar[2]}</div>
 						</div>
 						<!-- .forecast-header -->
 						<div class="forecast-content">
@@ -163,14 +174,19 @@
 									alt="" width=48>
 							</div>
 							<div class="degree">
-								23<sup>o</sup>C
+								${temperature[4]}<sup>o</sup>C
 							</div>
-							<small>18<sup>o</sup></small>
+							<br>
+							<span><img
+								src="<c:url value="/resources/images/icon-wind.png" />" alt="" style="float:left;">${wind[4]}</span>
+							<br><span><img
+								src="<c:url value="/resources/images/icon-compass.png" />"
+								alt="" style="float:left;">${pressure[4]}</span>
 						</div>
 					</div>
 					<div class="forecast">
 						<div class="forecast-header">
-							<div class="day">Thursday</div>
+							<div class="day">${calendar[3]}</div>
 						</div>
 						<!-- .forecast-header -->
 						<div class="forecast-content">
@@ -179,14 +195,19 @@
 									alt="" width=48>
 							</div>
 							<div class="degree">
-								23<sup>o</sup>C
+								${temperature[5]}<sup>o</sup>C
 							</div>
-							<small>18<sup>o</sup></small>
+							<br>
+							<span><img
+								src="<c:url value="/resources/images/icon-wind.png" />" alt="" style="float:left;">${wind[5]}</span>
+							<br><span><img
+								src="<c:url value="/resources/images/icon-compass.png" />"
+								alt="" style="float:left;">${pressure[5]}</span>
 						</div>
 					</div>
 					<div class="forecast">
 						<div class="forecast-header">
-							<div class="day">Friday</div>
+							<div class="day">${calendar[4]}</div>
 						</div>
 						<!-- .forecast-header -->
 						<div class="forecast-content">
@@ -195,14 +216,19 @@
 									alt="" width=48>
 							</div>
 							<div class="degree">
-								23<sup>o</sup>C
+								${temperature[6]}<sup>o</sup>C
 							</div>
-							<small>18<sup>o</sup></small>
+							<br>
+							<span><img
+								src="<c:url value="/resources/images/icon-wind.png" />" alt="" style="float:left;">${wind[6]}</span>
+							<br><span><img
+								src="<c:url value="/resources/images/icon-compass.png" />"
+								alt="" style="float:left;">${pressure[6]}</span>
 						</div>
 					</div>
 					<div class="forecast">
 						<div class="forecast-header">
-							<div class="day">Saturday</div>
+							<div class="day">${calendar[5]}</div>
 						</div>
 						<!-- .forecast-header -->
 						<div class="forecast-content">
@@ -211,14 +237,19 @@
 									alt="" width=48>
 							</div>
 							<div class="degree">
-								23<sup>o</sup>C
+								${temperature[7]}<sup>o</sup>C
 							</div>
-							<small>18<sup>o</sup></small>
+							<br>
+							<span><img
+								src="<c:url value="/resources/images/icon-wind.png" />" alt="" style="float:left;">${wind[7]}</span>
+							<br><span><img
+								src="<c:url value="/resources/images/icon-compass.png" />"
+								alt="" style="float:left;">${pressure[7]}</span>
 						</div>
 					</div>
 					<div class="forecast">
 						<div class="forecast-header">
-							<div class="day">Sunday</div>
+							<div class="day">${calendar[6]}</div>
 						</div>
 						<!-- .forecast-header -->
 						<div class="forecast-content">
@@ -227,9 +258,14 @@
 									alt="" width=48>
 							</div>
 							<div class="degree">
-								23<sup>o</sup>C
+								${temperature[8]}<sup>o</sup>C
 							</div>
-							<small>18<sup>o</sup></small>
+							<br>
+							 <span><img
+								src="<c:url value="/resources/images/icon-wind.png" />" alt="" style="float:left;">${wind[8]}</span>
+							<br><span><img
+								src="<c:url value="/resources/images/icon-compass.png" />"
+								alt="" style="float:left;">${pressure[8]}</span>
 						</div>
 					</div>
 				</div>
