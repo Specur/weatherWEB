@@ -76,6 +76,8 @@
            
 			         </tr>
 			         </br>
+			         dzien tygodnia: ${dayOfWeek}
+			         </br>
 			         dzien      : ${calendar}
 			         </br>
 			         pora dnia  : ${timeOfTheDay}
@@ -87,6 +89,8 @@
 			          deszcz(mm): ${rain}
 			         </br>
 			         prognoza: ${forecast}
+			         </br>
+			         
 					</div>
 
 			</div>

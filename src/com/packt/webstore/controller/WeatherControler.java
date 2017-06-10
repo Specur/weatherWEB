@@ -133,6 +133,7 @@ public class WeatherControler {
 		Elements forecast = getURLForForecast.select("#forecast-cont > table > tbody > tr.med.summary-row > td");
 		Elements getTimeOfTheDay = getURLForForecast.select("#forecast-cont > table > tbody > tr.lar.hea1 > td > span");
 		List<String> weatherCalendar = calculateDay();
+		List<String> dayOfWeek = calculateDayOfWeek();
 		List<String> summary = new ArrayList<>();
 		for (int i = 0; i < forecast.size(); i++) {
 			summary.add(forecast.get(i).text());
@@ -145,6 +146,7 @@ public class WeatherControler {
 		model.addAttribute("rain", rain);
 		model.addAttribute("szczyt", peakNameForModel);
 		model.addAttribute("forecast", summary);
+		model.addAttribute("dayOfWeek", dayOfWeek);
 		return "/peak";
 	}
 
