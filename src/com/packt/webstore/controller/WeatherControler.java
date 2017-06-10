@@ -51,11 +51,13 @@ public class WeatherControler {
 		model.addAttribute("greeting", "Witaj");
 		return "peaks";
 	}
+
 	@RequestMapping("/weekendWeather")
 	public String weekendWeatherEntry(Model model) {
 		model.addAttribute("greeting", "Witaj");
 		return "weekendWeather";
 	}
+
 	@RequestMapping("/authors")
 	public String authors(Model model) {
 		model.addAttribute("greeting", "Witaj");
@@ -107,16 +109,17 @@ public class WeatherControler {
 		String peakName3 = peakNameNew.replace(" ", "-").replace("%20", "-");
 		peakName3 = org.apache.commons.lang3.StringUtils.stripAccents(peakName3);
 
-		//do wyświetlania w widoku
-		String peakNameForModel_ = peakNameNew.replace(" ", " ").replace("%20", " ").replace("%C3%B3", "ó").replace("%C4%85", "ą")
-				.replace("%C4%87", "ć").replace("%C4%99", "ę").replace("%C5%82", "ł").replace("%C5%84", "ń")
-				.replace("%C5%9B", "ś").replace("%C5%BA", "ź").replace("%C5%BC", "ż").replace("%C4%86", "Ć")
-				.replace("%C4%84", "Ą").replace("%C4%98", "Ę").replace("%C5%81", "Ł").replace("%C5%83", "Ń")
-				.replace("%C3%93", "Ó").replace("%C5%9A", "Ś").replace("%C5%B9", "Ź").replace("%C5%BB", "Ż");
-		String peakNameForModel = peakNameForModel_.substring(0, 1).toUpperCase() + peakNameForModel_.substring(1);;
+		// do wyświetlania w widoku
+		String peakNameForModel_ = peakNameNew.replace(" ", " ").replace("%20", " ").replace("%C3%B3", "ó")
+				.replace("%C4%85", "ą").replace("%C4%87", "ć").replace("%C4%99", "ę").replace("%C5%82", "ł")
+				.replace("%C5%84", "ń").replace("%C5%9B", "ś").replace("%C5%BA", "ź").replace("%C5%BC", "ż")
+				.replace("%C4%86", "Ć").replace("%C4%84", "Ą").replace("%C4%98", "Ę").replace("%C5%81", "Ł")
+				.replace("%C5%83", "Ń").replace("%C3%93", "Ó").replace("%C5%9A", "Ś").replace("%C5%B9", "Ź")
+				.replace("%C5%BB", "Ż");
+		String peakNameForModel = peakNameForModel_.substring(0, 1).toUpperCase() + peakNameForModel_.substring(1);
+		;
 
 		Document getURLForHeight = Jsoup.connect("https://www.mountain-forecast.com/peaks/" + peakName3).get();
-		
 
 		Elements height = getURLForHeight.getElementsByClass("height");
 		String heightt = height.get(0).text();
@@ -130,6 +133,10 @@ public class WeatherControler {
 		Elements forecast = getURLForForecast.select("#forecast-cont > table > tbody > tr.med.summary-row > td");
 		Elements getTimeOfTheDay = getURLForForecast.select("#forecast-cont > table > tbody > tr.lar.hea1 > td > span");
 		List<String> weatherCalendar = calculateDay();
+		List<String> summary = new ArrayList<>();
+		for (int i = 0; i < forecast.size(); i++) {
+			summary.add(forecast.get(i).text());
+		}
 
 		model.addAttribute("calendar", weatherCalendar);
 		model.addAttribute("timeOfTheDay", getTimeOfTheDay);
@@ -137,7 +144,7 @@ public class WeatherControler {
 		model.addAttribute("templ", tempLow);
 		model.addAttribute("rain", rain);
 		model.addAttribute("szczyt", peakNameForModel);
-		model.addAttribute("forecast",forecast);
+		model.addAttribute("forecast", summary);
 		return "/peak";
 	}
 
@@ -146,7 +153,7 @@ public class WeatherControler {
 
 		CollectionWeatherConditions weatherAllWebsite = new CollectionWeatherConditions();
 		WeatherParser division = new WeatherParser(weatherAllWebsite);
-
+		Elements description = null;
 		URL urlWeatherOnline = null;
 		URL urlPogodynka = null;
 
@@ -156,14 +163,24 @@ public class WeatherControler {
 		String cityName = cityNew.replace(" ", "-").replace("%20", "-");
 		cityName = org.apache.commons.lang3.StringUtils.stripAccents(cityNew);
 
-		//do wyświetlania w widoku
-		String peakNameForModel_ = city.replace(" ", " ").replace("%20", " ").replace("%C3%B3", "ó").replace("%C4%85", "ą")
-				.replace("%C4%87", "ć").replace("%C4%99", "ę").replace("%C5%82", "ł").replace("%C5%84", "ń")
-				.replace("%C5%9B", "ś").replace("%C5%BA", "ź").replace("%C5%BC", "ż").replace("%C4%86", "Ć")
-				.replace("%C4%84", "Ą").replace("%C4%98", "Ę").replace("%C5%81", "Ł").replace("%C5%83", "Ń")
-				.replace("%C3%93", "Ó").replace("%C5%9A", "Ś").replace("%C5%B9", "Ź").replace("%C5%BB", "Ż");
-		String peakNameForModel = peakNameForModel_.substring(0, 1).toUpperCase() + peakNameForModel_.substring(1);;
+		// do wyświetlania w widoku
+		String peakNameForModel_ = city.replace(" ", " ").replace("%20", " ").replace("%C3%B3", "ó")
+				.replace("%C4%85", "ą").replace("%C4%87", "ć").replace("%C4%99", "ę").replace("%C5%82", "ł")
+				.replace("%C5%84", "ń").replace("%C5%9B", "ś").replace("%C5%BA", "ź").replace("%C5%BC", "ż")
+				.replace("%C4%86", "Ć").replace("%C4%84", "Ą").replace("%C4%98", "Ę").replace("%C5%81", "Ł")
+				.replace("%C5%83", "Ń").replace("%C3%93", "Ó").replace("%C5%9A", "Ś").replace("%C5%B9", "Ź")
+				.replace("%C5%BB", "Ż");
+		String peakNameForModel = peakNameForModel_.substring(0, 1).toUpperCase() + peakNameForModel_.substring(1);
+		;
+		try {
+			Document getURLForForecast = Jsoup.connect("http://www.pogodynka.pl/polska/" + cityName + "_" + cityName)
+					.get();
 
+			description = getURLForForecast.select("tr > td.opis > div.obrazek_after");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			urlWeatherOnline = new URL("http://www.weatheronline.pl/Polska/" + cityName);
 			urlPogodynka = new URL("http://www.pogodynka.pl/polska/" + cityName + "_" + cityName);
@@ -172,7 +189,7 @@ public class WeatherControler {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		addDescription(model, description);
 		division.divisionPogodynka(urlPogodynka);
 		division.divisionWeatheronline(urlWeatherOnline);
 
@@ -183,11 +200,11 @@ public class WeatherControler {
 
 	private void addAttributeToModelweather(Model model, CollectionWeatherConditions weatherAllWebsite, String city) {
 		List<String> weatherCalendar = calculateDay();
+		List<String> dayOfWeek = calculateDayOfWeek();
 		// dane w tablach ustawione w nastepujacy sposob
 		// teraz 3h 6h 9h 1d 2d 3d 4d 5d 6d 7d 8d 9d 10d 11d 12d 13d 14d 15d 16d
 		model.addAttribute("calendar", weatherCalendar);
-		// model.addAttribute("description",
-		// weatherAllWebsite.getDescriptionWeather());
+		model.addAttribute("dayOfWeek", dayOfWeek);
 		model.addAttribute("pressure", weatherAllWebsite.getPressure());
 		model.addAttribute("temperature", weatherAllWebsite.getTemperature());
 		model.addAttribute("wind", weatherAllWebsite.getWind());
@@ -237,6 +254,7 @@ public class WeatherControler {
 		weatherCalendar.add(dateFormat.format(calendar.getTime()));
 		return weatherCalendar;
 	}
+
 	@RequestMapping(value = "/weekend", method = RequestMethod.POST)
 	public String getWeatherForWeekend(Model model, @RequestParam("city") String city) {
 		CollectionWeatherConditions weatherAllWebsite = new CollectionWeatherConditions();
@@ -261,60 +279,127 @@ public class WeatherControler {
 		model.addAttribute("temperature", weatherAllWebsite.getTemperature().toString());
 		model.addAttribute("wind", weatherAllWebsite.getWind());
 	}
+
 	private Map<String, LocalDate> daysOfTheNextWeekend() {
 		Map<String, LocalDate> nextWeekendDaysDate = new HashMap();
 		LocalDate date = LocalDate.now();
 		DayOfWeek today = date.getDayOfWeek();
-		switch(today) {
-			case MONDAY:
-				date.plusDays(4);
-				nextWeekendDaysDate.put("Piątek", date);
-				date.plusDays(1);
-				nextWeekendDaysDate.put("Sobota", date);
-				date.plusDays(1);
-				nextWeekendDaysDate.put("Niedziela", date);
-				break;
-			case TUESDAY:
-				date.plusDays(3);
-				nextWeekendDaysDate.put("Piątek", date);
-				date.plusDays(1);
-				nextWeekendDaysDate.put("Sobota", date);
-				date.plusDays(1);
-				nextWeekendDaysDate.put("Niedziela", date);
-				break;
-			case WEDNESDAY:
-				date.plusDays(2);
-				nextWeekendDaysDate.put("Piątek", date);
-				date.plusDays(1);
-				nextWeekendDaysDate.put("Sobota", date);
-				date.plusDays(1);
-				nextWeekendDaysDate.put("Niedziela", date);
-				break;
-			case THURSDAY:
-				date.plusDays(1);
-				nextWeekendDaysDate.put("Piątek", date);
-				date.plusDays(1);
-				nextWeekendDaysDate.put("Sobota", date);
-				date.plusDays(1);
-				nextWeekendDaysDate.put("Niedziela", date);
-				break;
-			case FRIDAY:
-				nextWeekendDaysDate.put("Piątek", date);
-				date.plusDays(1);
-				nextWeekendDaysDate.put("Sobota", date);
-				date.plusDays(1);
-				nextWeekendDaysDate.put("Niedziela", date);
-				break;
-			case SATURDAY:
-				nextWeekendDaysDate.put("Sobota", date);
-				date.plusDays(1);
-				nextWeekendDaysDate.put("Niedziela", date);
-				break;
-			case SUNDAY:
-				nextWeekendDaysDate.put("Niedziela", date);
+		switch (today) {
+		case MONDAY:
+			date.plusDays(4);
+			nextWeekendDaysDate.put("Piątek", date);
+			date.plusDays(1);
+			nextWeekendDaysDate.put("Sobota", date);
+			date.plusDays(1);
+			nextWeekendDaysDate.put("Niedziela", date);
+			break;
+		case TUESDAY:
+			date.plusDays(3);
+			nextWeekendDaysDate.put("Piątek", date);
+			date.plusDays(1);
+			nextWeekendDaysDate.put("Sobota", date);
+			date.plusDays(1);
+			nextWeekendDaysDate.put("Niedziela", date);
+			break;
+		case WEDNESDAY:
+			date.plusDays(2);
+			nextWeekendDaysDate.put("Piątek", date);
+			date.plusDays(1);
+			nextWeekendDaysDate.put("Sobota", date);
+			date.plusDays(1);
+			nextWeekendDaysDate.put("Niedziela", date);
+			break;
+		case THURSDAY:
+			date.plusDays(1);
+			nextWeekendDaysDate.put("Piątek", date);
+			date.plusDays(1);
+			nextWeekendDaysDate.put("Sobota", date);
+			date.plusDays(1);
+			nextWeekendDaysDate.put("Niedziela", date);
+			break;
+		case FRIDAY:
+			nextWeekendDaysDate.put("Piątek", date);
+			date.plusDays(1);
+			nextWeekendDaysDate.put("Sobota", date);
+			date.plusDays(1);
+			nextWeekendDaysDate.put("Niedziela", date);
+			break;
+		case SATURDAY:
+			nextWeekendDaysDate.put("Sobota", date);
+			date.plusDays(1);
+			nextWeekendDaysDate.put("Niedziela", date);
+			break;
+		case SUNDAY:
+			nextWeekendDaysDate.put("Niedziela", date);
 		}
 
 		return nextWeekendDaysDate;
+	}
+
+	private void addDescription(Model model, Elements description) {
+
+		List<String> desc = new ArrayList<>();
+		desc.add(description.get(description.size() - 73).toString());
+		desc.add(description.get(description.size() - 74).toString());
+		desc.add(description.get(description.size() - 73).toString());
+		desc.add(description.get(description.size() - 72).toString());
+		desc.add(description.get(description.size() - 67).toString());
+		desc.add(description.get(description.size() - 59).toString());
+		desc.add(description.get(description.size() - 51).toString());
+		desc.add(description.get(description.size() - 43).toString());
+		desc.add(description.get(description.size() - 35).toString());
+		desc.add(description.get(description.size() - 27).toString());
+		desc.add(description.get(description.size() - 19).toString());
+		desc.add(description.get(description.size() - 16).toString());
+		desc.add(description.get(description.size() - 14).toString());
+		desc.add(description.get(description.size() - 12).toString());
+		desc.add(description.get(description.size() - 10).toString());
+		desc.add(description.get(description.size() - 8).toString());
+		desc.add(description.get(description.size() - 6).toString());
+		desc.add(description.get(description.size() - 4).toString());
+		desc.add(description.get(description.size() - 2).toString());
+		desc.add(description.get(description.size() - 1).toString());
+
+		model.addAttribute("description", desc);
+	}
+
+	public static boolean oneOnFour(int rok) {
+		return ((rok % 4 == 0 && rok % 100 != 0) || rok % 400 == 0);
+	}
+
+	public static int dayWeak(int day, int month, int year) {
+
+		int howManyDay[] = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 };
+		int myDay;
+		int yy, c, g;
+		int result;
+		month = 6;
+		myDay = day + howManyDay[month - 1];
+		if ((month > 2) && (oneOnFour(year) == true))
+			myDay++;
+
+		yy = (year - 1) % 100;
+		c = (year - 1) - yy;
+		g = yy + (yy / 4);
+		result = (((((c / 100) % 4) * 5) + g) % 7);
+		result += myDay - 1;
+		result %= 7;
+
+		return result;
+	}
+
+	private List<String> calculateDayOfWeek() {
+		String[] dayList = new String[] { "poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota",
+				"niedziela" };
+		List<String> weatherCalendar = new ArrayList<String>();
+		Calendar calendar = Calendar.getInstance();
+		for (int i = 0; i < 20; i++) {
+			weatherCalendar.add(dayList[dayWeak(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH),
+					calendar.get(Calendar.YEAR))]);
+			calendar.add(Calendar.DAY_OF_MONTH, 1);
+		}
+
+		return weatherCalendar;
 	}
 
 }
