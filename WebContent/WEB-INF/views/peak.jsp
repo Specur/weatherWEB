@@ -84,6 +84,7 @@
 			         </br>
 			          deszcz(mm): ${rain}
 			         </br>
+			         prognoza: ${forecast}
 					</div>
 
 			</div>

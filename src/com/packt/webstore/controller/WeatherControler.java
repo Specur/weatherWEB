@@ -98,19 +98,9 @@ public class WeatherControler {
 	@RequestMapping(value = "/peak", method = RequestMethod.POST)
 	public String greetingSubmit(Model model, @RequestParam("peakName") String peakName) throws IOException {
 
-		// bez polskich znaków
-		// String peakName2 = peakName;
-		// peakName2 = peakName2.replaceAll(" ","-");
-		// peakName2 = peakName2.replace("ł", "l");
 		byte[] peakNameNew_ = peakName.getBytes(ISO_8859_1);
 		String peakNameNew = new String(peakNameNew_, UTF_8);
 
-		/*
-		String peakName2 = peakName.replace("&#322;", "l").replace("&#261;", "a").replace("&#281;", "e")
-				.replace("&#324;", "n").replace("&#263;", "c").replace("&#378;", "z").replace("&#380;", "z")
-				.replace("&#347;", "s").replace(" ", "-");
-		peakName2 = org.apache.commons.lang3.StringUtils.stripAccents(peakName2);
-		*/
 		// ł Ł ą ę ć ź ż ś Ś Ż Ź Ć
 
 		// do parsowania
@@ -126,8 +116,7 @@ public class WeatherControler {
 		String peakNameForModel = peakNameForModel_.substring(0, 1).toUpperCase() + peakNameForModel_.substring(1);;
 
 		Document getURLForHeight = Jsoup.connect("https://www.mountain-forecast.com/peaks/" + peakName3).get();
-		// Elements newsHeadlines =
-		// doc.select("//*[@id='tabs']/tbody/tr/td[2]/ul/li/a/span[1]");
+		
 
 		Elements height = getURLForHeight.getElementsByClass("height");
 		String heightt = height.get(0).text();
@@ -138,10 +127,8 @@ public class WeatherControler {
 		Elements tempHigh = getURLForForecast.select("#forecast-cont > table > tbody > tr:nth-child(11) > td > span");
 		Elements tempLow = getURLForForecast.select("#forecast-cont > table > tbody > tr:nth-child(12) > td > span");
 		Elements rain = getURLForForecast.select("#forecast-cont > table > tbody > tr:nth-child(10) > td > b > span");
-
-		// temp
+		Elements forecast = getURLForForecast.select("#forecast-cont > table > tbody > tr.med.summary-row > td");
 		Elements getTimeOfTheDay = getURLForForecast.select("#forecast-cont > table > tbody > tr.lar.hea1 > td > span");
-
 		List<String> weatherCalendar = calculateDay();
 
 		model.addAttribute("calendar", weatherCalendar);
@@ -150,20 +137,9 @@ public class WeatherControler {
 		model.addAttribute("templ", tempLow);
 		model.addAttribute("rain", rain);
 		model.addAttribute("szczyt", peakNameForModel);
+		model.addAttribute("forecast",forecast);
 		return "/peak";
 	}
-
-	// public static String stripAccents(String s)
-	// {
-
-	// org.apache.commons.lang3.StringEscapeUtils.escapeJava(s);
-	// s = Normalizer.normalize(s, Normalizer.Form.NFD);
-	// //s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
-	// s = s.replaceAll("[^\\p{ASCII}]", "");
-	// return Normalizer.normalize(s,Form.NFKD).replaceAll("‌​\\p{M}",
-	// "").replaceAll(" ", "_").replaceAll("ł", "l");
-	// return s;
-	// }
 
 	@RequestMapping("/weather/{city}")
 	public String mappingOnCity(Model model, @PathVariable("city") String city) {
