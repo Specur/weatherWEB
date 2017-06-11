@@ -11,7 +11,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0,maximum-scale=1">
 
-    <title>Weather Project - Pogoda</title>
+    <title>Weather Project - Pogoda na weekend</title>
 
     <!-- Loading third party fonts -->
     <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|"
@@ -69,7 +69,7 @@
     <main class="main-content">
         <div class="fullwidth-block">
             <div class="container">
-                <h2 class="section-title">Pogoda ${city}</h2>
+                <h2 class="section-title">Pogoda na weekend - ${city}</h2>
 
                 <div class="col-12">
                     <p>Dni 	<b> ${calendar}</b></p>

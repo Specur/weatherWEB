@@ -71,6 +71,7 @@
 
 		</div>
 	</div>
+	
 	<div class="forecast-table">
 		<div class="container">
 			<div class="forecast-container">
@@ -190,8 +191,37 @@
 	</div>
 
 	<main class="main-content">
+	
+	<div class="container">
+	
+	<div class="col-12">
+			<p>
+				Dni <b> ${calendar}</b>
+			</p>
+			<p>
+				Dzień <b> ${dayOfWeek}</b>
+			</p>
+			<p>
+				Desc <b> ${description}</b>
+			</p>
+			<p>
+				Wiatr <b> ${wind}</b>
+			</p>
+			<p>
+				Cisnienie <b> ${pressure}</b>
+			</p>
+			<p>
+				Temperatura <b> ${temperature}</b>
+			</p>
+			<p>
+				Temperatura <b> ${temperature[0]}</b>
+			</p>
+		</div>
+		
+		</div>
 
 		<jsp:include page="modules/livecameras.jsp" />
+		
 
 		<jsp:include page="modules/news.jsp" />
 

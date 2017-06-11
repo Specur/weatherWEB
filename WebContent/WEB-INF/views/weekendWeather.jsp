@@ -11,7 +11,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0,maximum-scale=1">
 
-    <title>Weather Project - Szczyty</title>
+    <title>Weather Project - Pogoda na weekend</title>
 
     <!-- Loading third party fonts -->
     <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|"
@@ -46,8 +46,8 @@
                 </button>
                 <ul class="menu">
                     <li class="menu-item"><a href="<c:url value="/" />">Strona główna</a></li>
-                    <li class="menu-item current-menu-item"><a href="<c:url value="/peaks" />">Szczyty</a></li>
-                    <li class="menu-item"><a href="<c:url value="/weekendWeather"/>">Pogoda na weekend</a></li>
+                    <li class="menu-item"><a href="<c:url value="/peaks" />">Szczyty</a></li>
+                    <li class="menu-item current-menu-item"><a href="<c:url value="/weekendWeather"/>">Pogoda na weekend</a></li>
                     <li class="menu-item"><a href="<c:url value="/smogkrakow" />">Smog Kraków</a></li>
                     <li class="menu-item"><a href="<c:url value="/authors" />">Autorzy</a></li>
                 </ul>
