@@ -4,6 +4,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
@@ -51,7 +53,8 @@
 						<li class="menu-item"><a href="<c:url value="/" />">Strona
 								główna</a></li>
 						<li class="menu-item"><a href="<c:url value="/peaks" />">Szczyty</a></li>
-						<li class="menu-item"><a href="<c:url value="/weekendWeather"/>">Pogoda na weekend</a></li>
+						<li class="menu-item"><a
+							href="<c:url value="/weekendWeather"/>">Pogoda na weekend</a></li>
 						<li class="menu-item"><a href="<c:url value="/smogkrakow" />">Smog
 								Kraków</a></li>
 						<li class="menu-item"><a href="<c:url value="/authors" />">Autorzy</a></li>
@@ -117,10 +120,10 @@
 
 		<div class="forecast-table">
 			<div class="container">
-				<div class="forecast-container" style="margin-top:-50px;">
+				<div class="forecast-container" style="margin-top: -50px;">
 					<div class="today forecast">
 						<div class="forecast-header">
-							<div class="day">Monday</div>
+							<div class="day">${dayOfWeek[0]}</div>
 							<div class="date">${calendar[0]}</div>
 						</div>
 						<!-- .forecast-header -->
@@ -131,143 +134,157 @@
 									${temperature[0]}<sup>o</sup>C
 								</div>
 								<div class="forecast-icon">
-									<img src="<c:url value="/resources/images/icons/icon-1.svg" />"
+									<c:if
+									test="${fn:contains(description[0], 'Zachmurzenie całkowite')}">
+									<img src="<c:url value="/resources/images/icons/icon-6.svg" />"
 										alt="" width=90>
+								</c:if>
+								<c:if
+									test="${fn:contains(description[0], 'Pochmurno, słabe opady deszczu')}">
+									<img src="<c:url value="/resources/images/icons/icon-4.svg" />"
+										alt="" width=90>
+								</c:if>
+
+								<c:choose>
+									<c:when test="${fn:contains(description[0], 'Pogodnie')}">
+
+										<c:choose>
+											<c:when
+												test="${fn:contains(description[0], 'Pogodnie, okresami wzrost zachmurzenia do umiarkowanego')}">
+
+												<img
+													src="<c:url value="/resources/images/icons/icon-3.svg" />"
+													alt="" width=90>
+											</c:when>
+											<c:otherwise>
+
+												<img
+													src="<c:url value="/resources/images/icons/icon-2.svg" />"
+													alt="" width=90>
+
+											</c:otherwise>
+
+										</c:choose>
+
+									</c:when>
+
+								</c:choose>
+
+
+								<c:if
+									test="${fn:contains(description[0], 'Zachmurzenie małe, możliwe słabe opady deszczu')}">
+									<img src="<c:url value="/resources/images/icons/icon-4.svg" />"
+										alt="" width=90>
+								</c:if>
+								<c:if
+									test="${fn:contains(description[0], 'Pochmurno z przejaśnieniami, słabe opady deszczu')}">
+									<img src="<c:url value="/resources/images/icons/icon-4.svg" />"
+										alt="" width=90>
+								</c:if>
+								<c:if
+									test="${fn:contains(description[0], 'Pochmurno, okresami przejaśnienia')}">
+									<img src="<c:url value="/resources/images/icons/icon-3.svg" />"
+										alt="" width=90>
+								</c:if>
 								</div>
 							</div>
-							 <span><img
+							<span><img
 								src="<c:url value="/resources/images/icon-wind.png" />" alt="">${wind[0]}</span>
 							<span><img
 								src="<c:url value="/resources/images/icon-compass.png" />"
 								alt="">${pressure[0]}</span>
 						</div>
 					</div>
+
+					<%!int i;%>
+
+					<%
+						for (i = 1; i <= 6; i++) {
+					%>
+
+					<c:set var="i" value="<%=i%>" />
+
 					<div class="forecast">
 						<div class="forecast-header">
-							<div class="day">${calendar[1]}</div>
+							<div class="day">${dayOfWeek[i]}</div>
 						</div>
 						<!-- .forecast-header -->
 						<div class="forecast-content">
+						${description[i]}
 							<div class="forecast-icon">
-								<img src="<c:url value="/resources/images/icons/icon-3.svg" />"
-									alt="" width=48>
+
+								
+
+								<c:if
+									test="${fn:contains(description[i], 'Zachmurzenie całkowite')}">
+									<img src="<c:url value="/resources/images/icons/icon-6.svg" />"
+										alt="" width=48>
+								</c:if>
+								<c:if
+									test="${fn:contains(description[i], 'Pochmurno, słabe opady deszczu')}">
+									<img src="<c:url value="/resources/images/icons/icon-4.svg" />"
+										alt="" width=48>
+								</c:if>
+
+								<c:choose>
+									<c:when test="${fn:contains(description[i], 'Pogodnie')}">
+
+										<c:choose>
+											<c:when
+												test="${fn:contains(description[i], 'Pogodnie, okresami wzrost zachmurzenia do umiarkowanego')}">
+
+												<img
+													src="<c:url value="/resources/images/icons/icon-3.svg" />"
+													alt="" width=48>
+											</c:when>
+											<c:otherwise>
+
+												<img
+													src="<c:url value="/resources/images/icons/icon-2.svg" />"
+													alt="" width=48>
+
+											</c:otherwise>
+
+										</c:choose>
+
+									</c:when>
+
+								</c:choose>
+
+
+								<c:if
+									test="${fn:contains(description[i], 'Zachmurzenie małe, możliwe słabe opady deszczu')}">
+									<img src="<c:url value="/resources/images/icons/icon-4.svg" />"
+										alt="" width=48>
+								</c:if>
+								<c:if
+									test="${fn:contains(description[i], 'Pochmurno z przejaśnieniami, słabe opady deszczu')}">
+									<img src="<c:url value="/resources/images/icons/icon-4.svg" />"
+										alt="" width=48>
+								</c:if>
+								<c:if
+									test="${fn:contains(description[i], 'Pochmurno, okresami przejaśnienia')}">
+									<img src="<c:url value="/resources/images/icons/icon-3.svg" />"
+										alt="" width=48>
+								</c:if>
+
+
 							</div>
 							<div class="degree">
-								${temperature[3]}<sup>o</sup>C
+								${temperature[i+3]}<sup>o</sup>C
 							</div>
-							<br>
-							 <span><img
-								src="<c:url value="/resources/images/icon-wind.png" />" alt="" style="float:left;">${wind[3]}</span>
-							<br><span><img
+							<br> <span><img
+								src="<c:url value="/resources/images/icon-wind.png" />" alt=""
+								style="float: left;">${wind[i+3]}</span> <br> <span><img
 								src="<c:url value="/resources/images/icon-compass.png" />"
-								alt="" style="float:left;">${pressure[3]}</span>
+								alt="" style="float: left;">${pressure[i+3]}</span>
 						</div>
 					</div>
-					<div class="forecast">
-						<div class="forecast-header">
-							<div class="day">${calendar[2]}</div>
-						</div>
-						<!-- .forecast-header -->
-						<div class="forecast-content">
-							<div class="forecast-icon">
-								<img src="<c:url value="/resources/images/icons/icon-5.svg" />"
-									alt="" width=48>
-							</div>
-							<div class="degree">
-								${temperature[4]}<sup>o</sup>C
-							</div>
-							<br>
-							<span><img
-								src="<c:url value="/resources/images/icon-wind.png" />" alt="" style="float:left;">${wind[4]}</span>
-							<br><span><img
-								src="<c:url value="/resources/images/icon-compass.png" />"
-								alt="" style="float:left;">${pressure[4]}</span>
-						</div>
-					</div>
-					<div class="forecast">
-						<div class="forecast-header">
-							<div class="day">${calendar[3]}</div>
-						</div>
-						<!-- .forecast-header -->
-						<div class="forecast-content">
-							<div class="forecast-icon">
-								<img src="<c:url value="/resources/images/icons/icon-7.svg" />"
-									alt="" width=48>
-							</div>
-							<div class="degree">
-								${temperature[5]}<sup>o</sup>C
-							</div>
-							<br>
-							<span><img
-								src="<c:url value="/resources/images/icon-wind.png" />" alt="" style="float:left;">${wind[5]}</span>
-							<br><span><img
-								src="<c:url value="/resources/images/icon-compass.png" />"
-								alt="" style="float:left;">${pressure[5]}</span>
-						</div>
-					</div>
-					<div class="forecast">
-						<div class="forecast-header">
-							<div class="day">${calendar[4]}</div>
-						</div>
-						<!-- .forecast-header -->
-						<div class="forecast-content">
-							<div class="forecast-icon">
-								<img src="<c:url value="/resources/images/icons/icon-12.svg" />"
-									alt="" width=48>
-							</div>
-							<div class="degree">
-								${temperature[6]}<sup>o</sup>C
-							</div>
-							<br>
-							<span><img
-								src="<c:url value="/resources/images/icon-wind.png" />" alt="" style="float:left;">${wind[6]}</span>
-							<br><span><img
-								src="<c:url value="/resources/images/icon-compass.png" />"
-								alt="" style="float:left;">${pressure[6]}</span>
-						</div>
-					</div>
-					<div class="forecast">
-						<div class="forecast-header">
-							<div class="day">${calendar[5]}</div>
-						</div>
-						<!-- .forecast-header -->
-						<div class="forecast-content">
-							<div class="forecast-icon">
-								<img src="<c:url value="/resources/images/icons/icon-13.svg" />"
-									alt="" width=48>
-							</div>
-							<div class="degree">
-								${temperature[7]}<sup>o</sup>C
-							</div>
-							<br>
-							<span><img
-								src="<c:url value="/resources/images/icon-wind.png" />" alt="" style="float:left;">${wind[7]}</span>
-							<br><span><img
-								src="<c:url value="/resources/images/icon-compass.png" />"
-								alt="" style="float:left;">${pressure[7]}</span>
-						</div>
-					</div>
-					<div class="forecast">
-						<div class="forecast-header">
-							<div class="day">${calendar[6]}</div>
-						</div>
-						<!-- .forecast-header -->
-						<div class="forecast-content">
-							<div class="forecast-icon">
-								<img src="<c:url value="/resources/images/icons/icon-14.svg" />"
-									alt="" width=48>
-							</div>
-							<div class="degree">
-								${temperature[8]}<sup>o</sup>C
-							</div>
-							<br>
-							 <span><img
-								src="<c:url value="/resources/images/icon-wind.png" />" alt="" style="float:left;">${wind[8]}</span>
-							<br><span><img
-								src="<c:url value="/resources/images/icon-compass.png" />"
-								alt="" style="float:left;">${pressure[8]}</span>
-						</div>
-					</div>
+
+					<%
+						}
+					%>
+
 				</div>
 			</div>
 		</div>

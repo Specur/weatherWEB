@@ -173,7 +173,6 @@ public class WeatherControler {
 				.replace("%C5%83", "Ń").replace("%C3%93", "Ó").replace("%C5%9A", "Ś").replace("%C5%B9", "Ź")
 				.replace("%C5%BB", "Ż");
 		String peakNameForModel = peakNameForModel_.substring(0, 1).toUpperCase() + peakNameForModel_.substring(1);
-		;
 		try {
 			Document getURLForForecast = Jsoup.connect("http://www.pogodynka.pl/polska/" + cityName + "_" + cityName)
 					.get();
@@ -262,24 +261,40 @@ public class WeatherControler {
 		CollectionWeatherConditions weatherAllWebsite = new CollectionWeatherConditions();
 		WeatherParser division = new WeatherParser(weatherAllWebsite);
 		URL urlPogodynka = null;
+		
+		byte[] cityNew_ = city.getBytes(ISO_8859_1);
+		String cityNew = new String(cityNew_, UTF_8);
+
+		String cityName = cityNew.replace(" ", "-").replace("%20", "-");
+		cityName = org.apache.commons.lang3.StringUtils.stripAccents(cityNew);
+		
+		// do wyświetlania w widoku
+		String peakNameForModel_ = cityNew.replace(" ", " ").replace("%20", " ").replace("%C3%B3", "ó")
+				.replace("%C4%85", "ą").replace("%C4%87", "ć").replace("%C4%99", "ę").replace("%C5%82", "ł")
+				.replace("%C5%84", "ń").replace("%C5%9B", "ś").replace("%C5%BA", "ź").replace("%C5%BC", "ż")
+				.replace("%C4%86", "Ć").replace("%C4%84", "Ą").replace("%C4%98", "Ę").replace("%C5%81", "Ł")
+				.replace("%C5%83", "Ń").replace("%C3%93", "Ó").replace("%C5%9A", "Ś").replace("%C5%B9", "Ź")
+				.replace("%C5%BB", "Ż");
+		String peakNameForModel = peakNameForModel_.substring(0, 1).toUpperCase() + peakNameForModel_.substring(1);
 
 		try {
-			urlPogodynka = new URL("http://www.pogodynka.pl/polska/" + city + "_" + city);
+			urlPogodynka = new URL("http://www.pogodynka.pl/polska/" + cityName + "_" + cityName);
 		} catch (MalformedURLException var7) {
 			var7.printStackTrace();
 		}
 
 		division.weatherForWeekend(urlPogodynka);
-		this.addAttributeToModelWeekend(model, weatherAllWebsite);
+		this.addAttributeToModelWeekend(model, weatherAllWebsite, peakNameForModel);
 		return "weekend";
 	}
 
-	private void addAttributeToModelWeekend(Model model, CollectionWeatherConditions weatherAllWebsite) {
+	private void addAttributeToModelWeekend(Model model, CollectionWeatherConditions weatherAllWebsite, String city) {
 		Map<String, LocalDate> weatherCalendar = this.daysOfTheNextWeekend();
 		model.addAttribute("calendar", weatherCalendar);
 		model.addAttribute("pressure", weatherAllWebsite.getPressure());
 		model.addAttribute("temperature", weatherAllWebsite.getTemperature().toString());
 		model.addAttribute("wind", weatherAllWebsite.getWind());
+		model.addAttribute("city", city);
 	}
 
 	private Map<String, LocalDate> daysOfTheNextWeekend() {
