@@ -30,6 +30,7 @@ import com.packt.webstore.service.SmogParser;
 import com.packt.webstore.service.WeatherParser;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -118,8 +119,11 @@ public class WeatherControler {
 				.replace("%C5%BB", "Ż");
 		String peakNameForModel = peakNameForModel_.substring(0, 1).toUpperCase() + peakNameForModel_.substring(1);
 		;
-
-		Document getURLForHeight = Jsoup.connect("https://www.mountain-forecast.com/peaks/" + peakName3).get();
+		Document getURLForHeight = null;
+		String noURL = null;
+		try{
+		getURLForHeight = Jsoup.connect("https://www.mountain-forecast.com/peaks/" + peakName3).get();
+		
 
 		Elements height = getURLForHeight.getElementsByClass("height");
 		String heightt = height.get(0).text();
@@ -138,15 +142,28 @@ public class WeatherControler {
 		for (int i = 0; i < forecast.size(); i++) {
 			summary.add(forecast.get(i).text());
 		}
+		List<String> rainList = new ArrayList<>();
+		for (int i = 0; i < rain.size(); i++) {
+			//rain.get(i).text().replaceAll("-", "0");
+			String changed = rain.get(i).text().replace("-", "0");
+			rainList.add(changed);
+		}
+		
+		
 
 		model.addAttribute("calendar", weatherCalendar);
 		model.addAttribute("timeOfTheDay", getTimeOfTheDay);
 		model.addAttribute("temph", tempHigh);
 		model.addAttribute("templ", tempLow);
-		model.addAttribute("rain", rain);
+		model.addAttribute("rain", rainList);
 		model.addAttribute("szczyt", peakNameForModel);
 		model.addAttribute("forecast", summary);
 		model.addAttribute("dayOfWeek", dayOfWeek);
+		}catch(HttpStatusException e)
+		{
+			noURL = "błędna nazwa szczytu lub brak w bazie";
+			model.addAttribute("noURL",noURL);
+		}
 		return "/peak";
 	}
 
