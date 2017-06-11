@@ -76,6 +76,8 @@
            
 			         </tr>
 			         </br>
+			         ${noURL}
+			         </br>
 			         dzien tygodnia: ${dayOfWeek}
 			         </br>
 			         dzien      : ${calendar}
