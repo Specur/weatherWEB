@@ -233,6 +233,16 @@
 	<jsp:include page="modules/footer.jsp" />
 
 	<!-- .site-footer -->
+	
+	<style>
+	
+	.arrow-feature li {
+	    position: relative;
+	    padding-left: 0!important;
+	}
+	
+	</style>
+	
 </div>
 
 <script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>

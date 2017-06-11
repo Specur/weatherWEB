@@ -71,10 +71,10 @@
             <div class="container">
                 <h2 class="section-title">Pogoda na weekend</h2>
                 <div class="col-12">
-                    Podaj nazwe miejscowosci, dla której chcesz poznać pogodę na weekend:
+                    <p>Podaj nazwe miejscowosci, dla której chcesz poznać pogodę na weekend:</p>
                     <FORM ACTION="http://localhost:8080/spring-webmvc/weekend"
                           METHOD="POST">
-                        <INPUT TYPE="TEXT" NAME="city"><BR>
+                        <INPUT TYPE="TEXT" NAME="city">
                         <INPUT TYPE="SUBMIT" VALUE="Wyslij">
                     </FORM>
                 </div>

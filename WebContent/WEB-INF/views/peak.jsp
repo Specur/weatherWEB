@@ -66,160 +66,174 @@
 		<div class="hero" data-bg-image="<c:url value="/resources/images/peak.jpg" />">
 
 		</div>
-
-		
-		<main class="main-content">
-		<div class="fullwidth-block">
-			<div class="container">
-				<h2 class="section-title">${szczyt}</h2>
-             
-           
-			         </tr>
-			         </br>
-			         ${noURL}
-			         </br>
-			         dzien tygodnia: ${dayOfWeek}
-			         </br>
-			         dzien      : ${calendar}
-			         </br>
-			         pora dnia  : ${timeOfTheDay}
-			         </br>
-			         temperatura najwyzsza: ${temph}
-			         </br>
-			         temperatura najnizsza: ${templ}
-			         </br>
-			          deszcz(mm): ${rain}
-			         </br>
-			         prognoza: ${forecast}
-			         </br>
-			         
+	
+		<c:choose>
+		    <c:when test="${noURL == 'błędna nazwa szczytu lub brak w bazie'}">
+		      
+		       <main class="main-content">
+					<div class="fullwidth-block">
+						<div class="container">
+							<h2 class="section-title">${noURL}</h2>
+							<a href="<c:url value="/peaks" />"><< Powrót</a>
+						</div>
 					</div>
-
-			</div>
-		</div>
-		
-		<%! int k; %> 
-		
-		 <%for ( k = 0; k <= 1; k++){ %>
-		
-		<div class="forecast-table">
-			<div class="container">
-				<div class="forecast-container" style="margin-top:-50px;">
+		    </c:when> 
+		    <c:otherwise>
+		    	
+		    	<main class="main-content">
+					<div class="fullwidth-block">
+						<div class="container">
+							<h2 class="section-title">${szczyt}</h2>
+			                 
+						         </br>
+						         dzien tygodnia: ${dayOfWeek}
+						         </br>
+						         dzien      : ${calendar}
+						         </br>
+						         pora dnia  : ${timeOfTheDay}
+						         </br>
+						         temperatura najwyzsza: ${temph}
+						         </br>
+						         temperatura najnizsza: ${templ}
+						         </br>
+						          deszcz(mm): ${rain}
+						         </br>
+						         prognoza: ${forecast}
+						         </br>
+						         
+								</div>
 			
-					<%! int i; %> 
-					
-					 <%for ( i = k*3; i <= (k*3)+2; i++){ %>
-					 
-					<div class="forecast forecast-peak">
-						<div class="forecast-header">
-							<c:set var="i" value="<%= i %>"/>
-							<div class="day">${calendar[i]} - ${dayOfWeek[i]}</div>
 						</div>
-						<!-- .forecast-header -->
-						
-						<%! int j; %> 
-						
-						<%for ( j = i*3; j <= (i*3)+2; j++){ %>
-					       
-						<div class="forecast-content">
-							<div class="forecast-icon">
-							
-							<c:set var="j" value="<%= j %>"/>
-						
-							${timeOfTheDay[j] == '<span class="tiny">night</span>' ? "<strong>Noc</strong><br>" : ''}
-							${timeOfTheDay[j] == '<span class="tiny">AM</span>' ? "<strong>Rano</strong><br>" : ''}
-							${timeOfTheDay[j] == '<span class="tiny">PM</span>' ? "<strong>Po południu</strong><br>" : ''}
-							
-							<c:choose>
-							    <c:when test="${forecast[j]=='rain shwrs'}">
-							        <img src="<c:url value="/resources/images/icons/icon-10.svg" />"
-									alt="" width=48>
-							    </c:when> 
-							    <c:when test="${forecast[j]=='clear'}">
-							        <img src="<c:url value="/resources/images/icons/icon-2.svg" />"
-									alt="" width=48>
-							    </c:when> 
-							    <c:when test="${forecast[j]=='some clouds'}">
-							        <img src="<c:url value="/resources/images/icons/icon-3.svg" />"
-									alt="" width=48>
-							    </c:when> 
-							    <c:when test="${forecast[j]=='heavy rain'}">
-							        <img src="<c:url value="/resources/images/icons/icon-10.svg" />"
-									alt="" width=48>
-							    </c:when> 
-							    <c:when test="${forecast[j]=='snow shwrs'}">
-							        <img src="<c:url value="/resources/images/icons/icon-14.svg" />"
-									alt="" width=48>
-							    </c:when> 
-							    <c:when test="${forecast[j]=='light snow'}">
-							        <img src="<c:url value="/resources/images/icons/icon-13.svg" />"
-									alt="" width=48>
-							    </c:when> 
-							    <c:when test="${forecast[j]=='mod. rain'}">
-							        <img src="<c:url value="/resources/images/icons/icon-10.svg" />"
-									alt="" width=48>
-							    </c:when> 
-							    <c:when test="${forecast[j]=='mod. snow'}">
-							        <img src="<c:url value="/resources/images/icons/icon-13.svg" />"
-									alt="" width=48>
-							    </c:when> 
-							</c:choose>
-							</div>
-							min
-							<div class="degree">
-								 ${templ[j]}<sup>o</sup>C
-							</div>
-							max
-							<div class="degree">
-								 ${temph[j]}<sup>o</sup>C
-							</div>
-							<br>
-							 <span><img
-								src="<c:url value="/resources/images/icon-umberella.png" />" alt="" style="float:left;">${rain[j]}mm</span>
-							
-						</div>
-						
-						 <%}%>
-							
 					</div>
+					
+					<%! int k; %> 
+					
+					 <%for ( k = 0; k <= 1; k++){ %>
+					
+					<div class="forecast-table">
+						<div class="container">
+							<div class="forecast-container" style="margin-top:-50px;">
+						
+								<%! int i; %> 
+								
+								 <%for ( i = k*3; i <= (k*3)+2; i++){ %>
+								 
+								<div class="forecast forecast-peak">
+									<div class="forecast-header">
+										<c:set var="i" value="<%= i %>"/>
+										<div class="day">${calendar[i]} - ${dayOfWeek[i]}</div>
+									</div>
+									<!-- .forecast-header -->
+									
+									<%! int j; %> 
+									
+									<%for ( j = i*3; j <= (i*3)+2; j++){ %>
+								       
+									<div class="forecast-content">
+										<div class="forecast-icon">
+										
+										<c:set var="j" value="<%= j %>"/>
+									
+										${timeOfTheDay[j] == '<span class="tiny">night</span>' ? "<strong>Noc</strong><br>" : ''}
+										${timeOfTheDay[j] == '<span class="tiny">AM</span>' ? "<strong>Rano</strong><br>" : ''}
+										${timeOfTheDay[j] == '<span class="tiny">PM</span>' ? "<strong>Po południu</strong><br>" : ''}
+										
+										<c:choose>
+										    <c:when test="${forecast[j]=='rain shwrs'}">
+										        <img src="<c:url value="/resources/images/icons/icon-10.svg" />"
+												alt="" width=48>
+										    </c:when> 
+										    <c:when test="${forecast[j]=='clear'}">
+										        <img src="<c:url value="/resources/images/icons/icon-2.svg" />"
+												alt="" width=48>
+										    </c:when> 
+										    <c:when test="${forecast[j]=='some clouds'}">
+										        <img src="<c:url value="/resources/images/icons/icon-3.svg" />"
+												alt="" width=48>
+										    </c:when> 
+										    <c:when test="${forecast[j]=='heavy rain'}">
+										        <img src="<c:url value="/resources/images/icons/icon-10.svg" />"
+												alt="" width=48>
+										    </c:when> 
+										    <c:when test="${forecast[j]=='snow shwrs'}">
+										        <img src="<c:url value="/resources/images/icons/icon-14.svg" />"
+												alt="" width=48>
+										    </c:when> 
+										    <c:when test="${forecast[j]=='light snow'}">
+										        <img src="<c:url value="/resources/images/icons/icon-13.svg" />"
+												alt="" width=48>
+										    </c:when> 
+										    <c:when test="${forecast[j]=='mod. rain'}">
+										        <img src="<c:url value="/resources/images/icons/icon-10.svg" />"
+												alt="" width=48>
+										    </c:when> 
+										    <c:when test="${forecast[j]=='mod. snow'}">
+										        <img src="<c:url value="/resources/images/icons/icon-13.svg" />"
+												alt="" width=48>
+										    </c:when> 
+										</c:choose>
+										</div>
+										min
+										<div class="degree">
+											 ${templ[j]}<sup>o</sup>C
+										</div>
+										max
+										<div class="degree">
+											 ${temph[j]}<sup>o</sup>C
+										</div>
+										<br>
+										 <span><img
+											src="<c:url value="/resources/images/icon-umberella.png" />" alt="" style="float:left;">${rain[j]}mm</span>
+										
+									</div>
+									
+									 <%}%>
+										
+								</div>
+								
+								 <%}%>
+								
+							</div>
+						</div>
+					</div>
+					
+					<br>
 					
 					 <%}%>
 					
-				</div>
-			</div>
-		</div>
+					
+					<style>
+					
+					.forecast-container .forecast.forecast-peak .forecast-content {
+					    padding: 50px 20px 10px;
+					    text-align: center;
+					    float: left;
+					    width: 33.3333%;
+					}
+							
+					@media screen and (max-width: 990px) {
+						.forecast-container .forecast.forecast-peak {
+							display: block;
+							width: 33.333%!important;
+							float: left;
+						}
+					}
+					
+					@media screen and (max-width: 767px) {
+						.forecast-container .forecast.forecast-peak {
+							display: block;
+							width: 100%!important;
+							float: left;
+						}
+					}
+					
+					</style>
+		    	
+		    </c:otherwise>
+         </c:choose>
+
 		
-		<br>
 		
-		 <%}%>
-		
-		
-		<style>
-		
-		.forecast-container .forecast.forecast-peak .forecast-content {
-		    padding: 50px 20px 10px;
-		    text-align: center;
-		    float: left;
-		    width: 33.3333%;
-		}
-				
-		@media screen and (max-width: 990px) {
-			.forecast-container .forecast.forecast-peak {
-				display: block;
-				width: 33.333%!important;
-				float: left;
-			}
-		}
-		
-		@media screen and (max-width: 767px) {
-			.forecast-container .forecast.forecast-peak {
-				display: block;
-				width: 100%!important;
-				float: left;
-			}
-		}
-		
-		</style>
 
 		<jsp:include page="modules/news.jsp" />
 
