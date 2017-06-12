@@ -47,7 +47,7 @@
 					<ul class="menu">
 						<li class="menu-item"><a href="<c:url value="/" />">Strona główna</a></li>
 						<li class="menu-item current-menu-item"><a href="<c:url value="/peaks" />">Szczyty</a></li>
-						<li class="menu-item"><a href="#">Pogoda na weekend</a></li>
+						<li class="menu-item"><a href="<c:url value="/weekendWeather"/>">Pogoda na weekend</a></li>
 						<li class="menu-item"><a href="<c:url value="/smogkrakow" />">Smog Kraków</a></li>
 						<li class="menu-item"><a href="<c:url value="/authors" />">Autorzy</a></li>
 					</ul>
@@ -71,10 +71,10 @@
 			<div class="container">
 				<h2 class="section-title">Szczyty</h2>
 					<div class="col-12">
-						 Podaj nazwe szczytu:
+						 <p>Podaj nazwe szczytu:</p>
 						 <FORM ACTION="/peak"
 						      METHOD="POST">
-						    <INPUT TYPE="TEXT" NAME="peakName"><BR>
+						    <INPUT TYPE="TEXT" NAME="peakName">
 						    <INPUT TYPE="SUBMIT" VALUE="Wyslij">
 						</FORM>
 					</div>

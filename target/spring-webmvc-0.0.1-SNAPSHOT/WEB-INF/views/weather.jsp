@@ -4,6 +4,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
@@ -16,12 +18,14 @@
 <!-- Loading third party fonts -->
 <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|"
 	rel="stylesheet" type="text/css">
-<link href="<c:url value="/resources/fonts/font-awesome.min.css" />" rel="stylesheet" type="text/css">
+<link href="<c:url value="/resources/fonts/font-awesome.min.css" />"
+	rel="stylesheet" type="text/css">
 
 
 <!-- Loading main css file -->
 <link href="<c:url value="/resources/css/style.css" />" rel="stylesheet">
-<link href="<c:url value="/resources/css/lightbox.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/lightbox.css" />"
+	rel="stylesheet">
 
 </head>
 
@@ -32,7 +36,8 @@
 		<div class="site-header">
 			<div class="container">
 				<a href="<c:url value="/" />" class="branding"> <img
-					src="<c:url value="/resources/images/logo.png" />" alt="" class="logo">
+					src="<c:url value="/resources/images/logo.png" />" alt=""
+					class="logo">
 					<div class="logo-type">
 						<h1 class="site-title">Weather Project</h1>
 						<small class="site-description">...</small>
@@ -45,10 +50,13 @@
 						<i class="fa fa-bars"></i>
 					</button>
 					<ul class="menu">
-						<li class="menu-item"><a href="<c:url value="/" />">Strona główna</a></li>
+						<li class="menu-item"><a href="<c:url value="/" />">Strona
+								główna</a></li>
 						<li class="menu-item"><a href="<c:url value="/peaks" />">Szczyty</a></li>
-						<li class="menu-item"><a href="#">Pogoda na weekend</a></li>
-						<li class="menu-item"><a href="<c:url value="/smogkrakow" />">Smog Kraków</a></li>
+						<li class="menu-item"><a
+							href="<c:url value="/weekendWeather"/>">Pogoda na weekend</a></li>
+						<li class="menu-item"><a href="<c:url value="/smogkrakow" />">Smog
+								Kraków</a></li>
 						<li class="menu-item"><a href="<c:url value="/authors" />">Autorzy</a></li>
 					</ul>
 					<!-- .menu -->
@@ -60,37 +68,233 @@
 			</div>
 		</div>
 		<!-- .site-header -->
-		
-		<div class="hero" data-bg-image="<c:url value="/resources/images/weather.jpg" />">
+
+		<div class="hero"
+			data-bg-image="<c:url value="/resources/images/weather.jpg" />">
 
 		</div>
 
-		
+
 		<main class="main-content">
 		<div class="fullwidth-block">
 			<div class="container">
+
 				<h2 class="section-title">Pogoda ${city}</h2>
-			
-					<div class="col-12">
-						   <p>Dni 	<b> ${calendar}</b></p>
-						      <p>Wiatr	<b> ${wind}</b></p>
-						      <p>Cisnienie    	<b> ${pressure}</b></p>
-						      <p>Temperatura   <b> ${temperature}</b></p>
-					</div>
-					
-			
+				<br>
+
+				<div class="col-12">
+					<p>
+						Dni <b> ${calendar}</b>
+					</p>
+					<p>
+						Dzień <b> ${dayOfWeek}</b>
+					</p>
+					<p>
+						Desc <b> ${description}</b>
+					</p>
+					<p>
+						Wiatr <b> ${wind}</b>
+					</p>
+					<p>
+						Cisnienie <b> ${pressure}</b>
+					</p>
+					<p>
+						Temperatura <b> ${temperature}</b>
+					</p>
+					<p>
+						Temperatura <b> ${temperature[0]}</b>
+					</p>
+				</div>
+
+
 			</div>
 		</div>
 
-		<jsp:include page="modules/news.jsp" />
+		<div class="fullwidth-block">
+			<div class="container">
+				<h2 class="section-title">Pogoda ${city}</h2>
+			</div>
+		</div>
 
-		<jsp:include page="modules/interesting.jsp" />
-		
-		</main>
+		<div style="clear: both"></div>
+
+		<div class="forecast-table">
+			<div class="container">
+				<div class="forecast-container" style="margin-top: -50px;">
+					<div class="today forecast">
+						<div class="forecast-header">
+							<div class="day">${dayOfWeek[0]}</div>
+							<div class="date">${calendar[0]}</div>
+						</div>
+						<!-- .forecast-header -->
+						<div class="forecast-content">
+							<div class="location">${city}</div>
+							<div class="degree">
+								<div class="num">
+									${temperature[0]}<sup>o</sup>C
+								</div>
+								<div class="forecast-icon">
+									<c:if
+									test="${fn:contains(description[0], 'Zachmurzenie całkowite')}">
+									<img src="<c:url value="/resources/images/icons/icon-6.svg" />"
+										alt="" width=90>
+								</c:if>
+								<c:if
+									test="${fn:contains(description[0], 'Pochmurno, słabe opady deszczu')}">
+									<img src="<c:url value="/resources/images/icons/icon-4.svg" />"
+										alt="" width=90>
+								</c:if>
+
+								<c:choose>
+									<c:when test="${fn:contains(description[0], 'Pogodnie')}">
+
+										<c:choose>
+											<c:when
+												test="${fn:contains(description[0], 'Pogodnie, okresami wzrost zachmurzenia do umiarkowanego')}">
+
+												<img
+													src="<c:url value="/resources/images/icons/icon-3.svg" />"
+													alt="" width=90>
+											</c:when>
+											<c:otherwise>
+
+												<img
+													src="<c:url value="/resources/images/icons/icon-2.svg" />"
+													alt="" width=90>
+
+											</c:otherwise>
+
+										</c:choose>
+
+									</c:when>
+
+								</c:choose>
+
+
+								<c:if
+									test="${fn:contains(description[0], 'Zachmurzenie małe, możliwe słabe opady deszczu')}">
+									<img src="<c:url value="/resources/images/icons/icon-4.svg" />"
+										alt="" width=90>
+								</c:if>
+								<c:if
+									test="${fn:contains(description[0], 'Pochmurno z przejaśnieniami, słabe opady deszczu')}">
+									<img src="<c:url value="/resources/images/icons/icon-4.svg" />"
+										alt="" width=90>
+								</c:if>
+								<c:if
+									test="${fn:contains(description[0], 'Pochmurno, okresami przejaśnienia')}">
+									<img src="<c:url value="/resources/images/icons/icon-3.svg" />"
+										alt="" width=90>
+								</c:if>
+								</div>
+							</div>
+							<span><img
+								src="<c:url value="/resources/images/icon-wind.png" />" alt="">${wind[0]}</span>
+							<span><img
+								src="<c:url value="/resources/images/icon-compass.png" />"
+								alt="">${pressure[0]}</span>
+						</div>
+					</div>
+
+					<%!int i;%>
+
+					<%
+						for (i = 1; i <= 6; i++) {
+					%>
+
+					<c:set var="i" value="<%=i%>" />
+
+					<div class="forecast">
+						<div class="forecast-header">
+							<div class="day">${dayOfWeek[i]}</div>
+						</div>
+						<!-- .forecast-header -->
+						<div class="forecast-content">
+						${description[i]}
+							<div class="forecast-icon">
+
+								
+
+								<c:if
+									test="${fn:contains(description[i], 'Zachmurzenie całkowite')}">
+									<img src="<c:url value="/resources/images/icons/icon-6.svg" />"
+										alt="" width=48>
+								</c:if>
+								<c:if
+									test="${fn:contains(description[i], 'Pochmurno, słabe opady deszczu')}">
+									<img src="<c:url value="/resources/images/icons/icon-4.svg" />"
+										alt="" width=48>
+								</c:if>
+
+								<c:choose>
+									<c:when test="${fn:contains(description[i], 'Pogodnie')}">
+
+										<c:choose>
+											<c:when
+												test="${fn:contains(description[i], 'Pogodnie, okresami wzrost zachmurzenia do umiarkowanego')}">
+
+												<img
+													src="<c:url value="/resources/images/icons/icon-3.svg" />"
+													alt="" width=48>
+											</c:when>
+											<c:otherwise>
+
+												<img
+													src="<c:url value="/resources/images/icons/icon-2.svg" />"
+													alt="" width=48>
+
+											</c:otherwise>
+
+										</c:choose>
+
+									</c:when>
+
+								</c:choose>
+
+
+								<c:if
+									test="${fn:contains(description[i], 'Zachmurzenie małe, możliwe słabe opady deszczu')}">
+									<img src="<c:url value="/resources/images/icons/icon-4.svg" />"
+										alt="" width=48>
+								</c:if>
+								<c:if
+									test="${fn:contains(description[i], 'Pochmurno z przejaśnieniami, słabe opady deszczu')}">
+									<img src="<c:url value="/resources/images/icons/icon-4.svg" />"
+										alt="" width=48>
+								</c:if>
+								<c:if
+									test="${fn:contains(description[i], 'Pochmurno, okresami przejaśnienia')}">
+									<img src="<c:url value="/resources/images/icons/icon-3.svg" />"
+										alt="" width=48>
+								</c:if>
+
+
+							</div>
+							<div class="degree">
+								${temperature[i+3]}<sup>o</sup>C
+							</div>
+							<br> <span><img
+								src="<c:url value="/resources/images/icon-wind.png" />" alt=""
+								style="float: left;">${wind[i+3]}</span> <br> <span><img
+								src="<c:url value="/resources/images/icon-compass.png" />"
+								alt="" style="float: left;">${pressure[i+3]}</span>
+						</div>
+					</div>
+
+					<%
+						}
+					%>
+
+				</div>
+			</div>
+		</div>
+
+		<jsp:include page="modules/news.jsp" /> <jsp:include
+			page="modules/interesting.jsp" /> </main>
 		<!-- .main-content -->
 
-			<jsp:include page="modules/footer.jsp" />
-		
+		<jsp:include page="modules/footer.jsp" />
+
 		<!-- .site-footer -->
 	</div>
 
@@ -102,5 +306,4 @@
 </body>
 
 </html>
-                  
-                 
+
