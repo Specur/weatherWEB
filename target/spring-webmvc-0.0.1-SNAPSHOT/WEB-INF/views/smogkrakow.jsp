@@ -47,7 +47,7 @@
 					<ul class="menu">
 						<li class="menu-item"><a href="<c:url value="/" />">Strona główna</a></li>
 						<li class="menu-item"><a href="<c:url value="/peaks" />">Szczyty</a></li>
-						<li class="menu-item"><a href="#">Pogoda na weekend</a></li>
+						<li class="menu-item"><a href="<c:url value="/weekendWeather"/>">Pogoda na weekend</a></li>
 						<li class="menu-item current-menu-item"><a href="<c:url value="/smogkrakow" />">Smog Kraków</a></li>
 						<li class="menu-item"><a href="<c:url value="/authors" />">Autorzy</a></li>
 					</ul>
@@ -71,79 +71,15 @@
 			<div class="container">
 				<h2 class="section-title">Smog w Krakowie</h2>
 					<div class="col-12">
-						Al. Krasinskiego 
-						<c:choose>
-						   <c:when test="${Sensor1==0}">
-						       brak danych 
-						       <br />
-						   </c:when>    
-						   <c:otherwise>
-						       ${Sensor1} g/m3
-						       <br />
-						   </c:otherwise>
-						</c:choose>
-						ul. Bulwarowa
-						<c:choose>
-						   <c:when test="${Sensor2==0}">
-						       brak danych 
-						       <br />
-						   </c:when>    
-						   <c:otherwise>
-						       ${Sensor2} g/m3
-						       <br />
-						   </c:otherwise>
-						</c:choose>
+						Al. Krasinskiego ${Sensor1} g/m3<br>  
+						ul. Bulwarowa ${Sensor2} g/m3<br>
+						ul. Bujaka ${Sensor3} g/m3<br>				      
+						ul. Dietla ${Sensor4} g/m3<br>
+						os. Piastow ${Sensor5} g/m3<br>
+						ul. Zloty Rog ${Sensor6} g/m3<br><br>
 						
-						ul. Bujaka
-						<c:choose>
-						   <c:when test="${Sensor3==0}">
-						       brak danych 
-						       <br />
-						   </c:when>    
-						   <c:otherwise>
-						       ${Sensor3} g/m3
-						       <br />
-						   </c:otherwise>
-						</c:choose>
-						
-						ul. Dietla
-						<c:choose>
-						   <c:when test="${Sensor4==0}">
-						       brak danych 
-						       <br />
-						   </c:when>    
-						   <c:otherwise>
-						       ${Sensor4} g/m3
-						       <br />
-						   </c:otherwise>
-						</c:choose>
-						
-						os. Piastow	
-						<c:choose>
-						   <c:when test="${Sensor5==0}">
-						       brak danych 
-						       <br />
-						   </c:when>    
-						   <c:otherwise>
-						       ${Sensor5} g/m3
-						       <br />
-						   </c:otherwise>
-						</c:choose>
-						
-						ul. Zloty Rog
-						<c:choose>
-						   <c:when test="${Sensor6==0}">
-						       brak danych 
-						       <br />
-						   </c:when>    
-						   <c:otherwise>
-						       ${Sensor6} g/m3
-						       <br />
-						   </c:otherwise>
-						</c:choose>
-						
-						 </br>
-						 
+						Obowiązująca norma dobowa to maksymalnie 50 µg/m3, i nie może być przekraczana częściej niż przez 35 dni w roku.
+						      
 					</div>
 			</div>
 		</div>

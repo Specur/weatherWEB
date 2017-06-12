@@ -9,11 +9,13 @@ import java.text.Normalizer.Form;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import com.packt.webstore.domain.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,10 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.packt.webstore.domain.City;
-import com.packt.webstore.domain.Peak;
-import com.packt.webstore.domain.Smog;
-import com.packt.webstore.domain.CollectionWeatherConditions;
 import com.packt.webstore.service.SmogParser;
 import com.packt.webstore.service.WeatherParser;
 
@@ -278,6 +276,7 @@ public class WeatherControler {
 		CollectionWeatherConditions weatherAllWebsite = new CollectionWeatherConditions();
 		WeatherParser division = new WeatherParser(weatherAllWebsite);
 		URL urlPogodynka = null;
+		Elements description = null;
 		
 		byte[] cityNew_ = city.getBytes(ISO_8859_1);
 		String cityNew = new String(cityNew_, UTF_8);
@@ -293,13 +292,22 @@ public class WeatherControler {
 				.replace("%C5%83", "Ń").replace("%C3%93", "Ó").replace("%C5%9A", "Ś").replace("%C5%B9", "Ź")
 				.replace("%C5%BB", "Ż");
 		String peakNameForModel = peakNameForModel_.substring(0, 1).toUpperCase() + peakNameForModel_.substring(1);
+		try {
+			Document getURLForForecast = Jsoup.connect("http://www.pogodynka.pl/polska/" + cityName + "_" + cityName)
+					.get();
 
+			description = getURLForForecast.select("tr > td.opis > div.obrazek_after");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			urlPogodynka = new URL("http://www.pogodynka.pl/polska/" + cityName + "_" + cityName);
 		} catch (MalformedURLException var7) {
 			var7.printStackTrace();
 		}
 
+		addDescriptionForWeenedsDays(model, description);
 		division.weatherForWeekend(urlPogodynka);
 		this.addAttributeToModelWeekend(model, weatherAllWebsite, peakNameForModel);
 		return "weekend";
@@ -312,62 +320,87 @@ public class WeatherControler {
 		model.addAttribute("temperature", weatherAllWebsite.getTemperature().toString());
 		model.addAttribute("wind", weatherAllWebsite.getWind());
 		model.addAttribute("city", city);
+		model.addAttribute("hours", getHoursForWeekendsDays());
 	}
 
 	private Map<String, LocalDate> daysOfTheNextWeekend() {
 		Map<String, LocalDate> nextWeekendDaysDate = new HashMap();
-		LocalDate date = LocalDate.now();
+		LocalDate date = LocalDate.now(), date1, date2, date3;
 		DayOfWeek today = date.getDayOfWeek();
 		switch (today) {
 		case MONDAY:
-			date.plusDays(4);
-			nextWeekendDaysDate.put("Piątek", date);
-			date.plusDays(1);
-			nextWeekendDaysDate.put("Sobota", date);
-			date.plusDays(1);
-			nextWeekendDaysDate.put("Niedziela", date);
+			date1 = date.plusDays(4);
+			nextWeekendDaysDate.put("Piątek", date1);
+			date2 = date.plusDays(5);
+			nextWeekendDaysDate.put("Sobota", date2);
+			date3 = date.plusDays(6);
+			nextWeekendDaysDate.put("Niedziela", date3);
 			break;
 		case TUESDAY:
-			date.plusDays(3);
-			nextWeekendDaysDate.put("Piątek", date);
-			date.plusDays(1);
-			nextWeekendDaysDate.put("Sobota", date);
-			date.plusDays(1);
-			nextWeekendDaysDate.put("Niedziela", date);
+			date1 = date.plusDays(3);
+			nextWeekendDaysDate.put("Piątek", date1);
+			date2 = date.plusDays(4);
+			nextWeekendDaysDate.put("Sobota", date2);
+			date3 = date.plusDays(5);
+			nextWeekendDaysDate.put("Niedziela", date3);
 			break;
 		case WEDNESDAY:
-			date.plusDays(2);
-			nextWeekendDaysDate.put("Piątek", date);
-			date.plusDays(1);
-			nextWeekendDaysDate.put("Sobota", date);
-			date.plusDays(1);
-			nextWeekendDaysDate.put("Niedziela", date);
+			date1 = date.plusDays(2);
+			nextWeekendDaysDate.put("Piątek", date1);
+			date2 = date.plusDays(3);
+			nextWeekendDaysDate.put("Sobota", date2);
+			date3 = date.plusDays(4);
+			nextWeekendDaysDate.put("Niedziela", date3);
 			break;
 		case THURSDAY:
-			date.plusDays(1);
-			nextWeekendDaysDate.put("Piątek", date);
-			date.plusDays(1);
-			nextWeekendDaysDate.put("Sobota", date);
-			date.plusDays(1);
-			nextWeekendDaysDate.put("Niedziela", date);
+			date1 = date.plusDays(1);
+			nextWeekendDaysDate.put("Piątek", date1);
+			date2 = date.plusDays(2);
+			nextWeekendDaysDate.put("Sobota", date2);
+			date3 = date.plusDays(3);
+			nextWeekendDaysDate.put("Niedziela", date3);
 			break;
 		case FRIDAY:
-			nextWeekendDaysDate.put("Piątek", date);
-			date.plusDays(1);
-			nextWeekendDaysDate.put("Sobota", date);
-			date.plusDays(1);
-			nextWeekendDaysDate.put("Niedziela", date);
+			date1 = date.plusDays(0);
+			nextWeekendDaysDate.put("Piątek", date1);
+			date2 = date.plusDays(1);
+			nextWeekendDaysDate.put("Sobota", date2);
+			date3 = date.plusDays(2);
+			nextWeekendDaysDate.put("Niedziela", date3);
 			break;
 		case SATURDAY:
 			nextWeekendDaysDate.put("Sobota", date);
-			date.plusDays(1);
-			nextWeekendDaysDate.put("Niedziela", date);
+			date2 = date.plusDays(1);
+			nextWeekendDaysDate.put("Niedziela", date2);
 			break;
 		case SUNDAY:
 			nextWeekendDaysDate.put("Niedziela", date);
 		}
 
 		return nextWeekendDaysDate;
+	}
+	private List<LocalTime> getHoursForWeekendsDays()
+	{
+		List<LocalTime> timeList = new ArrayList<>();
+
+		LocalTime time = LocalTime.of(2, 00);
+		timeList.add(time);
+		time = LocalTime.of(5, 00);
+		timeList.add(time);
+		time = LocalTime.of(8, 00);
+		timeList.add(time);
+		time = LocalTime.of(11, 00);
+		timeList.add(time);
+		time = LocalTime.of(14, 00);
+		timeList.add(time);
+		time = LocalTime.of(17, 00);
+		timeList.add(time);
+		time = LocalTime.of(20, 00);
+		timeList.add(time);
+		time = LocalTime.of(23, 00);
+		timeList.add(time);
+
+		return timeList;
 	}
 
 	private void addDescription(Model model, Elements description) {
@@ -394,6 +427,290 @@ public class WeatherControler {
 		desc.add(description.get(description.size() - 2).toString());
 		desc.add(description.get(description.size() - 1).toString());
 
+		model.addAttribute("description", desc);
+	}
+	private void addDescriptionForWeenedsDays(Model model, Elements description) {
+
+		List<String> desc = new ArrayList<>();
+		LocalDate date = LocalDate.now();
+		DayOfWeek today = date.getDayOfWeek();
+		switch(today) {
+			case MONDAY:
+				desc.add(description.get(description.size()-46).toString());
+
+				desc.add(description.get(description.size() - 45).toString());
+
+				desc.add(description.get(description.size() - 44) .toString());
+
+				desc.add(description.get(description.size() - 43) .toString());
+
+				desc.add(description.get(description.size() - 42) .toString());
+
+				desc.add(description.get(description.size() - 41) .toString());
+
+				desc.add(description.get(description.size() - 40) .toString());
+
+				desc.add(description.get(description.size() - 39) .toString());
+
+				desc.add(description.get(description.size() - 38) .toString());
+
+				desc.add(description.get(description.size() - 37) .toString());
+
+				desc.add(description.get(description.size() - 36) .toString());
+
+				desc.add(description.get(description.size() - 35) .toString());
+
+				desc.add(description.get(description.size() - 34) .toString());
+
+				desc.add(description.get(description.size() - 33) .toString());
+
+				desc.add(description.get(description.size() - 32) .toString());
+
+				desc.add(description.get(description.size() - 31) .toString());
+
+				desc.add(description.get(description.size() - 30) .toString());
+
+				desc.add(description.get(description.size() - 29) .toString());
+
+				desc.add(description.get(description.size() - 28) .toString());
+
+				desc.add(description.get(description.size() - 27) .toString());
+
+				desc.add(description.get(description.size() - 26) .toString());
+
+				desc.add(description.get(description.size() - 25) .toString());
+
+				desc.add(description.get(description.size() - 24) .toString());
+
+				desc.add(description.get(description.size() - 23) .toString());
+				break;
+			case TUESDAY:
+				desc.add(description.get(description.size() - 54) .toString());
+
+				desc.add(description.get(description.size() - 53) .toString());
+
+				desc.add(description.get(description.size() - 52) .toString());
+
+				desc.add(description.get(description.size() - 51) .toString());
+
+				desc.add(description.get(description.size() - 50) .toString());
+
+				desc.add(description.get(description.size() - 49) .toString());
+
+				desc.add(description.get(description.size() - 48) .toString());
+
+				desc.add(description.get(description.size() - 47) .toString());
+
+				desc.add(description.get(description.size() - 46) .toString());
+
+				desc.add(description.get(description.size() - 45) .toString());
+
+				desc.add(description.get(description.size() - 44) .toString());
+
+				desc.add(description.get(description.size() - 43) .toString());
+
+				desc.add(description.get(description.size() - 42) .toString());
+
+				desc.add(description.get(description.size() - 41) .toString());
+
+				desc.add(description.get(description.size() - 40) .toString());
+
+				desc.add(description.get(description.size() - 39) .toString());
+
+				desc.add(description.get(description.size() - 38) .toString());
+
+				desc.add(description.get(description.size() - 37) .toString());
+
+				desc.add(description.get(description.size() - 36) .toString());
+
+				desc.add(description.get(description.size() - 35) .toString());
+
+				desc.add(description.get(description.size() - 34) .toString());
+
+				desc.add(description.get(description.size() - 33) .toString());
+
+				desc.add(description.get(description.size() - 32) .toString());
+
+				desc.add(description.get(description.size() - 31) .toString());
+				break;
+			case WEDNESDAY:
+
+				desc.add(description.get(description.size() - 62) .toString());
+
+				desc.add(description.get(description.size() - 61) .toString());
+
+				desc.add(description.get(description.size() - 60) .toString());
+
+				desc.add(description.get(description.size() - 59) .toString());
+
+				desc.add(description.get(description.size() - 58) .toString());
+
+				desc.add(description.get(description.size() - 57) .toString());
+
+				desc.add(description.get(description.size() - 56) .toString());
+
+				desc.add(description.get(description.size() - 55) .toString());
+
+				desc.add(description.get(description.size() - 54) .toString());
+
+				desc.add(description.get(description.size() - 53) .toString());
+
+				desc.add(description.get(description.size() - 52) .toString());
+
+				desc.add(description.get(description.size() - 51) .toString());
+
+				desc.add(description.get(description.size() - 50) .toString());
+
+				desc.add(description.get(description.size() - 49) .toString());
+
+				desc.add(description.get(description.size() - 48) .toString());
+
+				desc.add(description.get(description.size() - 47) .toString());
+
+				desc.add(description.get(description.size() - 46) .toString());
+
+				desc.add(description.get(description.size() - 45) .toString());
+
+				desc.add(description.get(description.size() - 44) .toString());
+
+				desc.add(description.get(description.size() - 43) .toString());
+
+				desc.add(description.get(description.size() - 42) .toString());
+
+				desc.add(description.get(description.size() - 41) .toString());
+
+				desc.add(description.get(description.size() - 40) .toString());
+
+				desc.add(description.get(description.size() - 39) .toString());
+				break;
+			case THURSDAY:
+
+				desc.add(description.get(description.size() - 70) .toString());
+
+				desc.add(description.get(description.size() - 69) .toString());
+
+				desc.add(description.get(description.size() - 68) .toString());
+
+				desc.add(description.get(description.size() - 67) .toString());
+
+				desc.add(description.get(description.size() - 66) .toString());
+
+				desc.add(description.get(description.size() - 65) .toString());
+
+				desc.add(description.get(description.size() - 64) .toString());
+
+				desc.add(description.get(description.size() - 63) .toString());
+
+				desc.add(description.get(description.size() - 62) .toString());
+
+				desc.add(description.get(description.size() - 61) .toString());
+
+				desc.add(description.get(description.size() - 60) .toString());
+
+				desc.add(description.get(description.size() - 59) .toString());
+
+				desc.add(description.get(description.size() - 58) .toString());
+
+				desc.add(description.get(description.size() - 57) .toString());
+
+				desc.add(description.get(description.size() - 56) .toString());
+
+				desc.add(description.get(description.size() - 55) .toString());
+
+				desc.add(description.get(description.size() - 54).toString());
+
+				desc.add(description.get(description.size() - 53) .toString());
+
+				desc.add(description.get(description.size() - 52) .toString());
+
+				desc.add(description.get(description.size() - 51) .toString());
+
+				desc.add(description.get(description.size() - 50) .toString());
+
+				desc.add(description.get(description.size() - 49) .toString());
+
+				desc.add(description.get(description.size() - 48) .toString());
+
+				desc.add(description.get(description.size() - 47) .toString());
+				break;
+			case FRIDAY:
+
+				desc.add(description.get(description.size() - 74) .toString());
+
+				desc.add(description.get(description.size() - 73) .toString());
+
+				desc.add(description.get(description.size() - 72) .toString());
+
+				desc.add(description.get(description.size() - 71) .toString());
+
+				desc.add(description.get(description.size() - 70) .toString());
+
+				desc.add(description.get(description.size() - 69) .toString());
+
+				desc.add(description.get(description.size() - 68) .toString());
+
+				desc.add(description.get(description.size() - 67) .toString());
+
+				desc.add(description.get(description.size() - 66) .toString());
+
+				desc.add(description.get(description.size() - 65) .toString());
+
+				desc.add(description.get(description.size() - 64) .toString());
+
+				desc.add(description.get(description.size() - 63) .toString());
+
+				desc.add(description.get(description.size() - 62) .toString());
+
+				desc.add(description.get(description.size() - 61) .toString());
+
+				desc.add(description.get(description.size() - 60) .toString());
+
+				desc.add(description.get(description.size() - 59) .toString());
+
+				desc.add(description.get(description.size() - 58) .toString());
+
+				desc.add(description.get(description.size() - 57) .toString());
+
+				desc.add(description.get(description.size() - 56) .toString());
+
+				desc.add(description.get(description.size() - 55) .toString());
+				break;
+			case SATURDAY:
+
+				desc.add(description.get(description.size() - 74) .toString());
+
+				desc.add(description.get(description.size() - 73) .toString());
+
+				desc.add(description.get(description.size() - 72) .toString());
+
+				desc.add(description.get(description.size() - 71) .toString());
+
+				desc.add(description.get(description.size() - 70) .toString());
+
+				desc.add(description.get(description.size() - 69) .toString());
+
+				desc.add(description.get(description.size() - 68) .toString());
+
+				desc.add(description.get(description.size() - 67) .toString());
+
+				desc.add(description.get(description.size() - 66) .toString());
+
+				desc.add(description.get(description.size() - 65) .toString());
+
+				desc.add(description.get(description.size() - 64) .toString());
+
+				desc.add(description.get(description.size() - 63) .toString());
+				break;
+			case SUNDAY:
+
+				desc.add(description.get(description.size() - 74) .toString());
+
+				desc.add(description.get(description.size() - 73) .toString());
+
+				desc.add(description.get(description.size() - 72) .toString());
+
+				desc.add(description.get(description.size() - 71) .toString());
+		}
 		model.addAttribute("description", desc);
 	}
 

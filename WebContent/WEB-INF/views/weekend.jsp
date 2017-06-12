@@ -76,6 +76,10 @@
                     <p>Wiatr	<b> ${wind}</b></p>
                     <p>Cisnienie    	<b> ${pressure}</b></p>
                     <p>Temperatura   <b> ${temperature}</b></p>
+                    <p> Godziny       <b>${hours}</b></p>
+                    <p>
+                        Desc <b> ${description}</b>
+                    </p>
                 </div>
 
 
