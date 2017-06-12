@@ -42,6 +42,38 @@ public class WeatherControler {
 	public String mappingOnWelcome(Model model) {
 		City city = new City();
 		model.addAttribute("city", city);
+		Elements description = null;
+		CollectionWeatherConditions weatherAllWebsite = new CollectionWeatherConditions();
+		WeatherParser division = new WeatherParser(weatherAllWebsite);
+		URL urlWeatherOnline = null;
+		URL urlPogodynka = null;
+		
+		try {
+			urlWeatherOnline = new URL("http://www.weatheronline.pl/Polska/krakow" );
+			urlPogodynka = new URL("http://www.pogodynka.pl/polska/krakow_krakow" );
+
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			Document getURLForForecast = Jsoup.connect("http://www.pogodynka.pl/polska/krakow_krakow")
+					.get();
+
+			description = getURLForForecast.select("tr > td.opis > div.obrazek_after");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		division.divisionPogodynka(urlPogodynka);
+		division.divisionWeatheronline(urlWeatherOnline);
+		addDescription(model, description);
+		
+		
+		addAttributeToIndex(model, weatherAllWebsite);
+		
+		
+		
 		return "index";
 	}
 
@@ -317,7 +349,7 @@ public class WeatherControler {
 		Map<String, LocalDate> weatherCalendar = this.daysOfTheNextWeekend();
 		model.addAttribute("calendar", weatherCalendar);
 		model.addAttribute("pressure", weatherAllWebsite.getPressure());
-		model.addAttribute("temperature", weatherAllWebsite.getTemperature().toString());
+		model.addAttribute("temperature", weatherAllWebsite.getTemperature());
 		model.addAttribute("wind", weatherAllWebsite.getWind());
 		model.addAttribute("city", city);
 		model.addAttribute("hours", getHoursForWeekendsDays());
@@ -751,6 +783,20 @@ public class WeatherControler {
 		}
 
 		return weatherCalendar;
+	}
+	
+	private void addAttributeToIndex(Model model, CollectionWeatherConditions weatherAllWebsite) {
+		List<String> weatherCalendar = calculateDay();
+		List<String> dayOfWeek = calculateDayOfWeek();
+		// dane w tablach ustawione w nastepujacy sposob
+		// teraz 3h 6h 9h 1d 2d 3d 4d 5d 6d 7d 8d 9d 10d 11d 12d 13d 14d 15d 16d
+		model.addAttribute("calendar", weatherCalendar);
+		model.addAttribute("dayOfWeek", dayOfWeek);
+		model.addAttribute("pressure", weatherAllWebsite.getPressure());
+		model.addAttribute("temperature", weatherAllWebsite.getTemperature());
+		model.addAttribute("wind", weatherAllWebsite.getWind());
+		
+
 	}
 
 }

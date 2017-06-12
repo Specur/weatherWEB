@@ -84,23 +84,7 @@
 					<div class="fullwidth-block">
 						<div class="container">
 							<h2 class="section-title">${szczyt}</h2>
-			                 
-						         </br>
-						         dzien tygodnia: ${dayOfWeek}
-						         </br>
-						         dzien      : ${calendar}
-						         </br>
-						         pora dnia  : ${timeOfTheDay}
-						         </br>
-						         temperatura najwyzsza: ${temph}
-						         </br>
-						         temperatura najnizsza: ${templ}
-						         </br>
-						          deszcz(mm): ${rain}
-						         </br>
-						         prognoza: ${forecast}
-						         </br>
-						         
+										         
 								</div>
 			
 						</div>
@@ -163,6 +147,10 @@
 										        <img src="<c:url value="/resources/images/icons/icon-13.svg" />"
 												alt="" width=48>
 										    </c:when> 
+										    <c:when test="${forecast[j]=='light rain'}">
+										        <img src="<c:url value="/resources/images/icons/icon-9.svg" />"
+												alt="" width=48>
+										    </c:when>										    
 										    <c:when test="${forecast[j]=='mod. rain'}">
 										        <img src="<c:url value="/resources/images/icons/icon-10.svg" />"
 												alt="" width=48>
