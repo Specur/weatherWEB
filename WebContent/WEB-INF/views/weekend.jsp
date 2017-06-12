@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
@@ -67,24 +68,181 @@
 
 
     <main class="main-content">
-        <div class="fullwidth-block">
+       
+		
+		<%!int outIndex;%>
+
+		<%
+			for (outIndex = 0; outIndex <= 2; outIndex++) {
+		%>
+		
+		<div class="fullwidth-block weather-weekend-block">
             <div class="container">
-                <h2 class="section-title">Pogoda na weekend - ${city}</h2>
-
-                <div class="col-12">
-                    <p>Dni 	<b> ${calendar}</b></p>
-                    <p>Wiatr	<b> ${wind}</b></p>
-                    <p>Cisnienie    	<b> ${pressure}</b></p>
-                    <p>Temperatura   <b> ${temperature}</b></p>
-                    <p> Godziny       <b>${hours}</b></p>
-                    <p>
-                        Desc <b> ${description}</b>
-                    </p>
-                </div>
-
-
+            
+            <% 
+            if(outIndex == 0){
+            %>
+               <h2>Piątek - ${calendar["Piątek"]}</h2>
+            <%	
+            }
+            %>
+            <% 
+            if(outIndex == 1){
+            %>
+               <h2>Sobota - ${calendar["Sobota"]}</h2>
+            <%	
+            }
+            %>
+            <% 
+            if(outIndex == 2){
+            %>
+               <h2>Niedziela - ${calendar["Niedziela"]}</h2>
+            <%	
+            }
+            %>
             </div>
         </div>
+		
+		<div class="forecast-table">
+     
+			<div class="container">
+				 
+			
+				<div class="forecast-container" style="margin-top: -50px;">	
+				
+
+					<%!int index;%>
+
+					<%
+						for (index = outIndex*8; index <= (outIndex*8)+7; index++) {
+				
+					%>
+
+					<c:set var="index" value="<%=index%>" />
+
+					<div class="forecast">
+						<div class="forecast-header">
+						<% 
+			            if(outIndex == 0){
+			            %>
+			               <div class="day">${hours[index]}</div>
+			            <%	
+			            }
+			            %>
+			            <% 
+			            if(outIndex == 1){
+			            %>
+			               <div class="day">${hours[index-8]}</div>
+			            <%	
+			            }
+			            %>
+			            <% 
+			            if(outIndex == 2){
+			            %>
+			               <div class="day">${hours[index-16]}</div>
+			            <%	
+			            }
+			            %>
+							
+						</div>
+						<!-- .forecast-header -->
+						<div class="forecast-content">
+						
+							<div class="forecast-icon">
+
+								
+
+								<c:if
+									test="${fn:contains(description[index], 'Zachmurzenie całkowite')}">
+									<img src="<c:url value="/resources/images/icons/icon-6.svg" />"
+										alt="" width=48>
+								</c:if>
+								<c:if
+									test="${fn:contains(description[index], 'Pochmurno, słabe opady deszczu')}">
+									<img src="<c:url value="/resources/images/icons/icon-4.svg" />"
+										alt="" width=48>
+								</c:if>
+								<c:if
+									test="${fn:contains(description[index], 'Bezchmurnie')}">
+									<img src="<c:url value="/resources/images/icons/icon-2.svg" />"
+										alt="" width=48>
+								</c:if>
+
+								<c:choose>
+									<c:when test="${fn:contains(description[index], 'Pogodnie')}">
+
+										<c:choose>
+											<c:when
+												test="${fn:contains(description[index], 'Pogodnie, okresami wzrost zachmurzenia do umiarkowanego')}">
+
+												<img
+													src="<c:url value="/resources/images/icons/icon-3.svg" />"
+													alt="" width=48>
+											</c:when>
+											<c:otherwise>
+
+												<img
+													src="<c:url value="/resources/images/icons/icon-2.svg" />"
+													alt="" width=48>
+
+											</c:otherwise>
+
+										</c:choose>
+
+									</c:when>
+
+								</c:choose>
+
+
+								<c:if
+									test="${fn:contains(description[index], 'Zachmurzenie małe, możliwe słabe opady deszczu')}">
+									<img src="<c:url value="/resources/images/icons/icon-4.svg" />"
+										alt="" width=48>
+								</c:if>
+								<c:if
+									test="${fn:contains(description[index], 'Pochmurno z przejaśnieniami, słabe opady deszczu')}">
+									<img src="<c:url value="/resources/images/icons/icon-4.svg" />"
+										alt="" width=48>
+								</c:if>
+								<c:if
+									test="${fn:contains(description[index], 'Pochmurno, okresami przejaśnienia')}">
+									<img src="<c:url value="/resources/images/icons/icon-3.svg" />"
+										alt="" width=48>
+								</c:if>
+
+
+							</div>
+							<div class="degree">
+								${temperature[index]}<sup>o</sup>C
+							</div>
+							<br> <span><img
+								src="<c:url value="/resources/images/icon-wind.png" />" alt=""
+								style="float: left;">${wind[index]}</span> <br> <span><img
+								src="<c:url value="/resources/images/icon-compass.png" />"
+								alt="" style="float: left;">${pressure[index]}</span>
+						</div>
+					</div>
+
+					<%
+						}
+					%>
+
+				</div>
+			</div>
+		</div>
+		
+		<%
+			}
+		%>
+		
+		<style>
+		
+		.weather-weekend-block:not(:first-child){
+			padding-top:0!important;
+		}
+		
+		</style>
+
 
         <jsp:include page="modules/news.jsp" />
 

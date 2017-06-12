@@ -53,7 +53,7 @@
 						<li class="menu-item"><a href="<c:url value="/" />">Strona
 								główna</a></li>
 						<li class="menu-item"><a href="<c:url value="/peaks" />">Szczyty</a></li>
-						<li class="menu-item"><a
+						<li class="menu-item current-menu-item"><a
 							href="<c:url value="/weekendWeather"/>">Pogoda na weekend</a></li>
 						<li class="menu-item"><a href="<c:url value="/smogkrakow" />">Smog
 								Kraków</a></li>
@@ -144,6 +144,11 @@
 									<img src="<c:url value="/resources/images/icons/icon-4.svg" />"
 										alt="" width=90>
 								</c:if>
+								<c:if
+									test="${fn:contains(description[i], 'Bezchmurnie')}">
+									<img src="<c:url value="/resources/images/icons/icon-2.svg" />"
+										alt="" width=48>
+								</c:if>
 
 								<c:choose>
 									<c:when test="${fn:contains(description[0], 'Pogodnie')}">
@@ -210,7 +215,7 @@
 						</div>
 						<!-- .forecast-header -->
 						<div class="forecast-content">
-						${description[i]}
+						
 							<div class="forecast-icon">
 
 								
@@ -223,6 +228,11 @@
 								<c:if
 									test="${fn:contains(description[i], 'Pochmurno, słabe opady deszczu')}">
 									<img src="<c:url value="/resources/images/icons/icon-4.svg" />"
+										alt="" width=48>
+								</c:if>
+								<c:if
+									test="${fn:contains(description[i], 'Bezchmurnie')}">
+									<img src="<c:url value="/resources/images/icons/icon-2.svg" />"
 										alt="" width=48>
 								</c:if>
 
